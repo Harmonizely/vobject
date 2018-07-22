@@ -185,9 +185,6 @@ class VCalendar extends VObject\Document {
             if ($component->name === 'VTIMEZONE') {
                 return false;
             }
-            if (isset($component->{'RECURRENCE-ID'})) {
-                return false;
-            }
             return true;
 
         };
