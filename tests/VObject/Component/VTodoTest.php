@@ -3,20 +3,22 @@
 namespace Sabre\VObject\Component;
 
 use PHPUnit\Framework\TestCase;
+use Sabre\VObject\Component;
 use Sabre\VObject\Reader;
 
-class VTodoTest extends TestCase
-{
+class VTodoTest extends TestCase {
+
     /**
      * @dataProvider timeRangeTestData
      */
-    public function testInTimeRange(VTodo $vtodo, $start, $end, $outcome)
-    {
+    function testInTimeRange(VTodo $vtodo, $start, $end, $outcome) {
+
         $this->assertEquals($outcome, $vtodo->isInTimeRange($start, $end));
+
     }
 
-    public function timeRangeTestData()
-    {
+    function timeRangeTestData() {
+
         $tests = [];
 
         $calendar = new VCalendar();
@@ -62,10 +64,11 @@ class VTodoTest extends TestCase
         $tests[] = [$vtodo7, new \DateTime('2011-01-01'), new \DateTime('2011-11-01'), true];
 
         return $tests;
+
     }
 
-    public function testValidate()
-    {
+    function testValidate() {
+
         $input = <<<HI
 BEGIN:VCALENDAR
 VERSION:2.0
@@ -86,10 +89,11 @@ HI;
         }
 
         $this->assertEquals([], $messages);
+
     }
 
-    public function testValidateInvalid()
-    {
+    function testValidateInvalid() {
+
         $input = <<<HI
 BEGIN:VCALENDAR
 VERSION:2.0
@@ -108,13 +112,14 @@ HI;
         }
 
         $this->assertEquals([
-            'UID MUST appear exactly once in a VTODO component',
-            'DTSTAMP MUST appear exactly once in a VTODO component',
+            "UID MUST appear exactly once in a VTODO component",
+            "DTSTAMP MUST appear exactly once in a VTODO component",
         ], $messages);
+
     }
 
-    public function testValidateDUEDTSTARTMisMatch()
-    {
+    function testValidateDUEDTSTARTMisMatch() {
+
         $input = <<<HI
 BEGIN:VCALENDAR
 VERSION:2.0
@@ -137,12 +142,13 @@ HI;
         }
 
         $this->assertEquals([
-            'The value type (DATE or DATE-TIME) must be identical for DUE and DTSTART',
+            "The value type (DATE or DATE-TIME) must be identical for DUE and DTSTART",
         ], $messages);
+
     }
 
-    public function testValidateDUEbeforeDTSTART()
-    {
+    function testValidateDUEbeforeDTSTART() {
+
         $input = <<<HI
 BEGIN:VCALENDAR
 VERSION:2.0
@@ -165,7 +171,9 @@ HI;
         }
 
         $this->assertEquals([
-            'DUE must occur after DTSTART',
+            "DUE must occur after DTSTART",
         ], $messages);
+
     }
+
 }

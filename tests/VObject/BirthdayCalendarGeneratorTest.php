@@ -4,12 +4,12 @@ namespace Sabre\VObject;
 
 use PHPUnit\Framework\TestCase;
 
-class BirthdayCalendarGeneratorTest extends TestCase
-{
+class BirthdayCalendarGeneratorTest extends TestCase {
+
     use PHPUnitAssertions;
 
-    public function testVcardStringWithValidBirthday()
-    {
+    function testVcardStringWithValidBirthday() {
+
         $generator = new BirthdayCalendarGenerator();
         $input = <<<VCF
 BEGIN:VCARD
@@ -43,10 +43,11 @@ ICS;
             $expected,
             $output
         );
+
     }
 
-    public function testArrayOfVcardStringsWithValidBirthdays()
-    {
+    function testArrayOfVcardStringsWithValidBirthdays() {
+
         $generator = new BirthdayCalendarGenerator();
         $input = [];
 
@@ -101,10 +102,11 @@ ICS;
             $expected,
             $output
         );
+
     }
 
-    public function testArrayOfVcardStringsWithValidBirthdaysViaConstructor()
-    {
+    function testArrayOfVcardStringsWithValidBirthdaysViaConstructor() {
+
         $input = [];
 
         $input[] = <<<VCF
@@ -160,10 +162,11 @@ ICS;
             $expected,
             $output
         );
+
     }
 
-    public function testVcardObjectWithValidBirthday()
-    {
+    function testVcardObjectWithValidBirthday() {
+
         $generator = new BirthdayCalendarGenerator();
         $input = <<<VCF
 BEGIN:VCARD
@@ -199,10 +202,11 @@ ICS;
             $expected,
             $output
         );
+
     }
 
-    public function testArrayOfVcardObjectsWithValidBirthdays()
-    {
+    function testArrayOfVcardObjectsWithValidBirthdays() {
+
         $generator = new BirthdayCalendarGenerator();
         $input = [];
 
@@ -261,10 +265,11 @@ ICS;
             $expected,
             $output
         );
+
     }
 
-    public function testVcardStringWithValidBirthdayWithXAppleOmitYear()
-    {
+    function testVcardStringWithValidBirthdayWithXAppleOmitYear() {
+
         $generator = new BirthdayCalendarGenerator();
         $input = <<<VCF
 BEGIN:VCARD
@@ -298,10 +303,11 @@ ICS;
             $expected,
             $output
         );
+
     }
 
-    public function testVcardStringWithValidBirthdayWithoutYear()
-    {
+    function testVcardStringWithValidBirthdayWithoutYear() {
+
         $generator = new BirthdayCalendarGenerator();
         $input = <<<VCF
 BEGIN:VCARD
@@ -335,10 +341,11 @@ ICS;
             $expected,
             $output
         );
+
     }
 
-    public function testVcardStringWithInvalidBirthday()
-    {
+    function testVcardStringWithInvalidBirthday() {
+
         $generator = new BirthdayCalendarGenerator();
         $input = <<<VCF
 BEGIN:VCARD
@@ -363,10 +370,11 @@ ICS;
             $expected,
             $output
         );
+
     }
 
-    public function testVcardStringWithNoBirthday()
-    {
+    function testVcardStringWithNoBirthday() {
+
         $generator = new BirthdayCalendarGenerator();
         $input = <<<VCF
 BEGIN:VCARD
@@ -390,10 +398,11 @@ ICS;
             $expected,
             $output
         );
+
     }
 
-    public function testVcardStringWithValidBirthdayLocalized()
-    {
+    function testVcardStringWithValidBirthdayLocalized() {
+
         $generator = new BirthdayCalendarGenerator();
         $input = <<<VCF
 BEGIN:VCARD
@@ -428,10 +437,11 @@ ICS;
             $expected,
             $output
         );
+
     }
 
-    public function testVcardStringWithEmptyBirthdayProperty()
-    {
+    function testVcardStringWithEmptyBirthdayProperty() {
+
         $generator = new BirthdayCalendarGenerator();
         $input = <<<VCF
 BEGIN:VCARD
@@ -456,28 +466,30 @@ ICS;
             $expected,
             $output
         );
+
     }
 
     /**
      * @expectedException \Sabre\VObject\ParseException
      */
-    public function testParseException()
-    {
+    function testParseException() {
+
         $generator = new BirthdayCalendarGenerator();
-        $input = <<<EOT
+        $input = <<<FOO
 BEGIN:FOO
 FOO:Bar
 END:FOO
-EOT;
+FOO;
 
         $generator->setObjects($input);
+
     }
 
     /**
      * @expectedException \InvalidArgumentException
      */
-    public function testInvalidArgumentException()
-    {
+    function testInvalidArgumentException() {
+
         $generator = new BirthdayCalendarGenerator();
         $input = <<<ICS
 BEGIN:VCALENDAR
@@ -490,13 +502,14 @@ END:VCALENDAR
 ICS;
 
         $generator->setObjects($input);
+
     }
 
     /**
      * @expectedException \InvalidArgumentException
      */
-    public function testInvalidArgumentExceptionForPartiallyInvalidArray()
-    {
+    function testInvalidArgumentExceptionForPartiallyInvalidArray() {
+
         $generator = new BirthdayCalendarGenerator();
         $input = [];
 
@@ -517,10 +530,11 @@ VCF;
         ]);
 
         $generator->setObjects($input);
+
     }
 
-    public function testBrokenVcardWithoutFN()
-    {
+    function testBrokenVcardWithoutFN() {
+
         $generator = new BirthdayCalendarGenerator();
         $input = <<<VCF
 BEGIN:VCARD
@@ -544,5 +558,7 @@ ICS;
             $expected,
             $output
         );
+
     }
+
 }

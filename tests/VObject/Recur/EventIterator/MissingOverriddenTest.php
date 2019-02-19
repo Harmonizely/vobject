@@ -6,12 +6,12 @@ use DateTime;
 use PHPUnit\Framework\TestCase;
 use Sabre\VObject\Reader;
 
-class MissingOverriddenTest extends TestCase
-{
+class MissingOverriddenTest extends TestCase {
+
     use \Sabre\VObject\PHPUnitAssertions;
 
-    public function testExpand()
-    {
+    function testExpand() {
+
         $input = <<<ICS
 BEGIN:VCALENDAR
 VERSION:2.0
@@ -57,5 +57,7 @@ END:VEVENT
 END:VCALENDAR
 ICS;
         $this->assertVObjectEqualsVObject($output, $vcal);
+
     }
+
 }

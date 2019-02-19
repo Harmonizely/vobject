@@ -8,19 +8,20 @@ use PHPUnit\Framework\TestCase;
  * Note that most MimeDir related tests can actually be found in the ReaderTest
  * class one level up.
  */
-class MimeDirTest extends TestCase
-{
+class MimeDirTest extends TestCase {
+
     /**
      * @expectedException \Sabre\VObject\ParseException
      */
-    public function testParseError()
-    {
+    function testParseError() {
+
         $mimeDir = new MimeDir();
         $mimeDir->parse(fopen(__FILE__, 'a'));
+
     }
 
-    public function testDecodeLatin1()
-    {
+    function testDecodeLatin1() {
+
         $vcard = <<<VCF
 BEGIN:VCARD
 VERSION:3.0
@@ -32,10 +33,11 @@ VCF;
         $mimeDir->setCharset('ISO-8859-1');
         $vcard = $mimeDir->parse($vcard);
         $this->assertEquals("umlaut u - \xC3\xBC", $vcard->FN->getValue());
+
     }
 
-    public function testDecodeInlineLatin1()
-    {
+    function testDecodeInlineLatin1() {
+
         $vcard = <<<VCF
 BEGIN:VCARD
 VERSION:2.1
@@ -46,10 +48,11 @@ VCF;
         $mimeDir = new MimeDir();
         $vcard = $mimeDir->parse($vcard);
         $this->assertEquals("umlaut u - \xC3\xBC", $vcard->FN->getValue());
+
     }
 
-    public function testIgnoreCharsetVCard30()
-    {
+    function testIgnoreCharsetVCard30() {
+
         $vcard = <<<VCF
 BEGIN:VCARD
 VERSION:3.0
@@ -60,10 +63,11 @@ VCF;
         $mimeDir = new MimeDir();
         $vcard = $mimeDir->parse($vcard);
         $this->assertEquals("foo-bar - \xFC", $vcard->FN->getValue());
+
     }
 
-    public function testDontDecodeLatin1()
-    {
+    function testDontDecodeLatin1() {
+
         $vcard = <<<VCF
 BEGIN:VCARD
 VERSION:4.0
@@ -78,22 +82,24 @@ VCF;
         // and the validator should report this, but it tests effectively
         // that we pass through the string byte-by-byte.
         $this->assertEquals("umlaut u - \xFC", $vcard->FN->getValue());
+
     }
 
     /**
      * @expectedException \InvalidArgumentException
      */
-    public function testDecodeUnsupportedCharset()
-    {
+    function testDecodeUnsupportedCharset() {
+
         $mimeDir = new MimeDir();
         $mimeDir->setCharset('foobar');
+
     }
 
     /**
      * @expectedException \Sabre\VObject\ParseException
      */
-    public function testDecodeUnsupportedInlineCharset()
-    {
+    function testDecodeUnsupportedInlineCharset() {
+
         $vcard = <<<VCF
 BEGIN:VCARD
 VERSION:2.1
@@ -103,10 +109,11 @@ VCF;
 
         $mimeDir = new MimeDir();
         $mimeDir->parse($vcard);
+
     }
 
-    public function testDecodeWindows1252()
-    {
+    function testDecodeWindows1252() {
+
         $vcard = <<<VCF
 BEGIN:VCARD
 VERSION:3.0
@@ -118,10 +125,11 @@ VCF;
         $mimeDir->setCharset('Windows-1252');
         $vcard = $mimeDir->parse($vcard);
         $this->assertEquals("Euro \xE2\x82\xAC", $vcard->FN->getValue());
+
     }
 
-    public function testDecodeWindows1252Inline()
-    {
+    function testDecodeWindows1252Inline() {
+
         $vcard = <<<VCF
 BEGIN:VCARD
 VERSION:2.1
@@ -132,10 +140,11 @@ VCF;
         $mimeDir = new MimeDir();
         $vcard = $mimeDir->parse($vcard);
         $this->assertEquals("Euro \xE2\x82\xAC", $vcard->FN->getValue());
+
     }
 
-    public function testCaseInsensitiveInlineCharset()
-    {
+    function testCaseInsensitiveInlineCharset() {
+
         $vcard = <<<VCF
 BEGIN:VCARD
 VERSION:2.1
@@ -147,7 +156,8 @@ VCF;
         $mimeDir = new MimeDir();
         $vcard = $mimeDir->parse($vcard);
         // we can do a simple assertion here. As long as we don't get an exception, everything is thing
-        $this->assertEquals('Euro', $vcard->FN->getValue());
-        $this->assertEquals('Test2', $vcard->N->getValue());
+        $this->assertEquals("Euro", $vcard->FN->getValue());
+        $this->assertEquals("Test2", $vcard->N->getValue());
+
     }
 }

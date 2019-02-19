@@ -6,18 +6,19 @@ use DateTime;
 use PHPUnit\Framework\TestCase;
 use Sabre\VObject\Reader;
 
-class VAlarmTest extends TestCase
-{
+class VAlarmTest extends TestCase {
+
     /**
      * @dataProvider timeRangeTestData
      */
-    public function testInTimeRange(VAlarm $valarm, $start, $end, $outcome)
-    {
+    function testInTimeRange(VAlarm $valarm, $start, $end, $outcome) {
+
         $this->assertEquals($outcome, $valarm->isInTimeRange($start, $end));
+
     }
 
-    public function timeRangeTestData()
-    {
+    function timeRangeTestData() {
+
         $tests = [];
 
         $calendar = new VCalendar();
@@ -96,6 +97,7 @@ class VAlarmTest extends TestCase
         $tests[] = [$valarm6, new DateTime('2012-03-01 01:00:00'), new DateTime('2012-04-01 01:00:00'), true];
         $tests[] = [$valarm6, new DateTime('2012-03-01 01:00:00'), new DateTime('2012-03-10 01:00:00'), false];
 
+
         // Relation to end time of event (DURATION instead of DTEND)
         $valarm7 = $calendar->createComponent('VALARM');
         $valarm7->TRIGGER = '-P1D';
@@ -123,14 +125,15 @@ class VAlarmTest extends TestCase
         $tests[] = [$valarm7, new DateTime('2012-02-25 01:00:00'), new DateTime('2012-03-05 01:00:00'), true];
         $tests[] = [$valarm7, new DateTime('2012-03-25 01:00:00'), new DateTime('2012-04-05 01:00:00'), false];
 
+
         return $tests;
     }
 
     /**
      * @expectedException \Sabre\VObject\InvalidDataException
      */
-    public function testInTimeRangeInvalidComponent()
-    {
+    function testInTimeRangeInvalidComponent() {
+
         $calendar = new VCalendar();
         $valarm = $calendar->createComponent('VALARM');
         $valarm->TRIGGER = '-P1D';
@@ -140,14 +143,15 @@ class VAlarmTest extends TestCase
         $vjournal->add($valarm);
 
         $valarm->isInTimeRange(new DateTime('2012-02-25 01:00:00'), new DateTime('2012-03-05 01:00:00'));
+
     }
 
     /**
      * This bug was found and reported on the mailing list.
      */
-    public function testInTimeRangeBuggy()
-    {
-        $input = <<<BLA
+    function testInTimeRangeBuggy() {
+
+$input = <<<BLA
 BEGIN:VCALENDAR
 BEGIN:VTODO
 DTSTAMP:20121003T064931Z
@@ -168,5 +172,7 @@ BLA;
         $vobj = Reader::read($input);
 
         $this->assertTrue($vobj->VTODO->VALARM->isInTimeRange(new \DateTime('2012-10-01 00:00:00'), new \DateTime('2012-11-01 00:00:00')));
+
     }
+
 }

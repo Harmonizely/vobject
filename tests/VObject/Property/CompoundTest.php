@@ -5,10 +5,10 @@ namespace Sabre\VObject\Property;
 use PHPUnit\Framework\TestCase;
 use Sabre\VObject\Component\VCard;
 
-class CompoundTest extends TestCase
-{
-    public function testSetParts()
-    {
+class CompoundTest extends TestCase {
+
+    function testSetParts() {
+
         $arr = [
             'ABC, Inc.',
             'North American Division',
@@ -23,10 +23,11 @@ class CompoundTest extends TestCase
         $this->assertEquals(3, count($elem->getParts()));
         $parts = $elem->getParts();
         $this->assertEquals('Marketing;Sales', $parts[2]);
+
     }
 
-    public function testGetParts()
-    {
+    function testGetParts() {
+
         $str = 'ABC\, Inc.;North American Division;Marketing\;Sales';
 
         $vcard = new VCard();
@@ -38,11 +39,13 @@ class CompoundTest extends TestCase
         $this->assertEquals('Marketing;Sales', $parts[2]);
     }
 
-    public function testGetPartsNull()
-    {
+    function testGetPartsNull() {
+
         $vcard = new VCard();
         $elem = $vcard->createProperty('ORG', null);
 
         $this->assertEquals(0, count($elem->getParts()));
+
     }
+
 }

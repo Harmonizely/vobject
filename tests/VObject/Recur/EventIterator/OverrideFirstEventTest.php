@@ -6,12 +6,12 @@ use DateTime;
 use PHPUnit\Framework\TestCase;
 use Sabre\VObject\Reader;
 
-class OverrideFirstEventTest extends TestCase
-{
+class OverrideFirstEventTest extends TestCase {
+
     use \Sabre\VObject\PHPUnitAssertions;
 
-    public function testOverrideFirstEvent()
-    {
+    function testOverrideFirstEvent() {
+
         $input = <<<ICS
 BEGIN:VCALENDAR
 VERSION:2.0
@@ -73,10 +73,12 @@ ICS;
             $expected,
             $vcal
         );
+
+
     }
 
-    public function testRemoveFirstEvent()
-    {
+    function testRemoveFirstEvent() {
+
         $input = <<<ICS
 BEGIN:VCALENDAR
 VERSION:2.0
@@ -115,5 +117,6 @@ ICS;
             $expected,
             $vcal
         );
+
     }
 }

@@ -2,13 +2,13 @@
 
 namespace Sabre\VObject\ITip;
 
-class BrokerSignificantChangesTest extends BrokerTester
-{
+class BrokerSignificantChangesTest extends BrokerTester {
+
     /**
-     * Check significant changes detection (no change).
+     * Check significant changes detection (no change)
      */
-    public function testSignificantChangesNoChange()
-    {
+    function testSignificantChangesNoChange() {
+
         $old = <<<ICS
 BEGIN:VCALENDAR
 VERSION:2.0
@@ -33,16 +33,16 @@ END:VCALENDAR
 ICS;
 
         $new = $old;
-        $expected = [['significantChange' => false]];
+        $expected = [['significantChange' => false, ]];
 
         $this->parse($old, $new, $expected, 'mailto:martin@fruux.com');
     }
 
     /**
-     * Check significant changes detection (no change).
+     * Check significant changes detection (no change)
      */
-    public function testSignificantChangesRRuleNoChange()
-    {
+    function testSignificantChangesRRuleNoChange() {
+
         $old = <<<ICS
 BEGIN:VCALENDAR
 VERSION:2.0
@@ -67,16 +67,17 @@ END:VCALENDAR
 ICS;
 
         $new = str_replace('FREQ=WEEKLY', 'FREQ=WEEKLY;INTERVAL=1', $old);
-        $expected = [['significantChange' => false]];
+        $expected = [['significantChange' => false, ]];
 
         $this->parse($old, $new, $expected, 'mailto:martin@fruux.com');
     }
 
+
     /**
-     * Check significant changes detection (no change).
+     * Check significant changes detection (no change)
      */
-    public function testSignificantChangesRRuleOrderNoChange()
-    {
+    function testSignificantChangesRRuleOrderNoChange() {
+
         $old = <<<ICS
 BEGIN:VCALENDAR
 VERSION:2.0
@@ -101,8 +102,9 @@ END:VCALENDAR
 ICS;
 
         $new = str_replace('FREQ=WEEKLY;BYDAY=MO', 'BYDAY=MO;FREQ=WEEKLY', $old);
-        $expected = [['significantChange' => false]];
+        $expected = [['significantChange' => false, ]];
 
         $this->parse($old, $new, $expected, 'mailto:martin@fruux.com');
     }
+
 }

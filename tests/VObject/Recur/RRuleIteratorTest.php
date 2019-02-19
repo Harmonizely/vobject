@@ -7,10 +7,10 @@ use DateTimeImmutable;
 use DateTimeZone;
 use PHPUnit\Framework\TestCase;
 
-class RRuleIteratorTest extends TestCase
-{
-    public function testHourly()
-    {
+class RRuleIteratorTest extends TestCase {
+
+    function testHourly() {
+
         $this->parse(
             'FREQ=HOURLY;INTERVAL=3;COUNT=12',
             '2011-10-07 12:00:00',
@@ -29,10 +29,11 @@ class RRuleIteratorTest extends TestCase
                 '2011-10-08 21:00:00',
             ]
         );
+
     }
 
-    public function testDaily()
-    {
+    function testDaily() {
+
         $this->parse(
             'FREQ=DAILY;INTERVAL=3;UNTIL=20111025T000000Z',
             '2011-10-07',
@@ -46,10 +47,11 @@ class RRuleIteratorTest extends TestCase
                 '2011-10-25 00:00:00',
             ]
         );
+
     }
 
-    public function testDailyByDayByHour()
-    {
+    function testDailyByDayByHour() {
+
         $this->parse(
             'FREQ=DAILY;BYDAY=SA,SU;BYHOUR=6,7',
             '2011-10-08 06:00:00',
@@ -68,10 +70,11 @@ class RRuleIteratorTest extends TestCase
                 '2011-10-23 07:00:00',
             ]
         );
+
     }
 
-    public function testDailyByHour()
-    {
+    function testDailyByHour() {
+
         $this->parse(
             'FREQ=DAILY;INTERVAL=2;BYHOUR=10,11,12,13,14,15',
             '2012-10-11 12:00:00',
@@ -90,10 +93,11 @@ class RRuleIteratorTest extends TestCase
                 '2012-10-15 11:00:00',
             ]
         );
+
     }
 
-    public function testDailyByDay()
-    {
+    function testDailyByDay() {
+
         $this->parse(
             'FREQ=DAILY;INTERVAL=2;BYDAY=TU,WE,FR',
             '2011-10-07 12:00:00',
@@ -112,10 +116,11 @@ class RRuleIteratorTest extends TestCase
                 '2011-11-30 12:00:00',
             ]
         );
+
     }
 
-    public function testDailyCount()
-    {
+    function testDailyCount() {
+
         $this->parse(
             'FREQ=DAILY;COUNT=5',
             '2014-08-01 18:03:00',
@@ -127,10 +132,11 @@ class RRuleIteratorTest extends TestCase
                 '2014-08-05 18:03:00',
             ]
         );
+
     }
 
-    public function testDailyByMonth()
-    {
+    function testDailyByMonth() {
+
         $this->parse(
             'FREQ=DAILY;BYMONTH=9,10;BYDAY=SU',
             '2007-10-04 16:00:00',
@@ -140,14 +146,15 @@ class RRuleIteratorTest extends TestCase
                 '2013-10-13 16:00:00',
                 '2013-10-20 16:00:00',
                 '2013-10-27 16:00:00',
-                '2014-09-07 16:00:00',
+                '2014-09-07 16:00:00'
             ],
             '2013-09-28'
         );
+
     }
 
-    public function testWeekly()
-    {
+    function testWeekly() {
+
         $this->parse(
             'FREQ=WEEKLY;INTERVAL=2;COUNT=10',
             '2011-10-07 00:00:00',
@@ -164,10 +171,11 @@ class RRuleIteratorTest extends TestCase
                 '2012-02-10 00:00:00',
             ]
         );
+
     }
 
-    public function testWeeklyByDay()
-    {
+    function testWeeklyByDay() {
+
         $this->parse(
             'FREQ=WEEKLY;INTERVAL=1;COUNT=4;BYDAY=MO;WKST=SA',
             '2014-08-01 00:00:00',
@@ -178,10 +186,11 @@ class RRuleIteratorTest extends TestCase
                 '2014-08-18 00:00:00',
             ]
         );
+
     }
 
-    public function testWeeklyByDay2()
-    {
+    function testWeeklyByDay2() {
+
         $this->parse(
             'FREQ=WEEKLY;INTERVAL=2;BYDAY=TU,WE,FR;WKST=SU',
             '2011-10-07 00:00:00',
@@ -200,10 +209,11 @@ class RRuleIteratorTest extends TestCase
                 '2011-11-30 00:00:00',
             ]
         );
+
     }
 
-    public function testWeeklyByDayByHour()
-    {
+    function testWeeklyByDayByHour() {
+
         $this->parse(
             'FREQ=WEEKLY;INTERVAL=2;BYDAY=TU,WE,FR;WKST=MO;BYHOUR=8,9,10',
             '2011-10-07 08:00:00',
@@ -225,10 +235,11 @@ class RRuleIteratorTest extends TestCase
                 '2011-11-01 10:00:00',
             ]
         );
+
     }
 
-    public function testWeeklyByDaySpecificHour()
-    {
+    function testWeeklyByDaySpecificHour() {
+
         $this->parse(
             'FREQ=WEEKLY;INTERVAL=2;BYDAY=TU,WE,FR;WKST=SU',
             '2011-10-07 18:00:00',
@@ -247,10 +258,11 @@ class RRuleIteratorTest extends TestCase
                 '2011-11-30 18:00:00',
             ]
         );
+
     }
 
-    public function testMonthly()
-    {
+    function testMonthly() {
+
         $this->parse(
             'FREQ=MONTHLY;INTERVAL=3;COUNT=5',
             '2011-12-05 00:00:00',
@@ -262,10 +274,11 @@ class RRuleIteratorTest extends TestCase
                  '2012-12-05 00:00:00',
             ]
         );
+
     }
 
-    public function testMonlthyEndOfMonth()
-    {
+    function testMonlthyEndOfMonth() {
+
         $this->parse(
             'FREQ=MONTHLY;INTERVAL=2;COUNT=12',
             '2011-12-31 00:00:00',
@@ -284,10 +297,11 @@ class RRuleIteratorTest extends TestCase
                 '2015-10-31 00:00:00',
             ]
         );
+
     }
 
-    public function testMonthlyByMonthDay()
-    {
+    function testMonthlyByMonthDay() {
+
         $this->parse(
             'FREQ=MONTHLY;INTERVAL=5;COUNT=9;BYMONTHDAY=1,31,-7',
             '2011-01-01 00:00:00',
@@ -303,10 +317,11 @@ class RRuleIteratorTest extends TestCase
                 '2012-04-24 00:00:00',
             ]
         );
+
     }
 
-    public function testMonthlyByDay()
-    {
+    function testMonthlyByDay() {
+
         $this->parse(
             'FREQ=MONTHLY;INTERVAL=2;COUNT=16;BYDAY=MO,-2TU,+1WE,3TH',
             '2011-01-03 00:00:00',
@@ -329,10 +344,11 @@ class RRuleIteratorTest extends TestCase
                 '2011-05-02 00:00:00',
             ]
         );
+
     }
 
-    public function testMonthlyByDayByMonthDay()
-    {
+    function testMonthlyByDayByMonthDay() {
+
         $this->parse(
             'FREQ=MONTHLY;COUNT=10;BYDAY=MO;BYMONTHDAY=1',
             '2011-08-01 00:00:00',
@@ -349,10 +365,11 @@ class RRuleIteratorTest extends TestCase
                 '2017-05-01 00:00:00',
             ]
         );
+
     }
 
-    public function testMonthlyByDayBySetPos()
-    {
+    function testMonthlyByDayBySetPos() {
+
         $this->parse(
             'FREQ=MONTHLY;COUNT=10;BYDAY=MO,TU,WE,TH,FR;BYSETPOS=1,-1',
             '2011-01-03 00:00:00',
@@ -369,10 +386,11 @@ class RRuleIteratorTest extends TestCase
                 '2011-05-31 00:00:00',
             ]
         );
+
     }
 
-    public function testYearly()
-    {
+    function testYearly() {
+
         $this->parse(
             'FREQ=YEARLY;COUNT=10;INTERVAL=3',
             '2011-01-01 00:00:00',
@@ -391,8 +409,8 @@ class RRuleIteratorTest extends TestCase
         );
     }
 
-    public function testYearlyLeapYear()
-    {
+    function testYearlyLeapYear() {
+
         $this->parse(
             'FREQ=YEARLY;COUNT=3',
             '2012-02-29 00:00:00',
@@ -404,8 +422,8 @@ class RRuleIteratorTest extends TestCase
         );
     }
 
-    public function testYearlyByMonth()
-    {
+    function testYearlyByMonth() {
+
         $this->parse(
             'FREQ=YEARLY;COUNT=8;INTERVAL=4;BYMONTH=4,10',
             '2011-04-07 00:00:00',
@@ -420,58 +438,63 @@ class RRuleIteratorTest extends TestCase
                 '2023-10-07 00:00:00',
             ]
         );
+
     }
 
     /**
      * @expectedException \Sabre\VObject\InvalidDataException
      */
-    public function testYearlyByMonthInvalidValue1()
-    {
+    function testYearlyByMonthInvalidValue1() {
+
         $this->parse(
             'FREQ=YEARLY;COUNT=6;BYMONTHDAY=24;BYMONTH=0',
             '2011-04-07 00:00:00',
             []
         );
+
     }
 
     /**
      * @expectedException \Sabre\VObject\InvalidDataException
      */
-    public function testYearlyByMonthInvalidValue2()
-    {
+    function testYearlyByMonthInvalidValue2() {
+
         $this->parse(
             'FREQ=YEARLY;COUNT=6;BYMONTHDAY=24;BYMONTH=bla',
             '2011-04-07 00:00:00',
             []
         );
+
     }
 
     /**
      * @expectedException \Sabre\VObject\InvalidDataException
      */
-    public function testYearlyByMonthManyInvalidValues()
-    {
+    function testYearlyByMonthManyInvalidValues() {
+
         $this->parse(
             'FREQ=YEARLY;COUNT=6;BYMONTHDAY=24;BYMONTH=0,bla',
             '2011-04-07 00:00:00',
             []
         );
+
     }
 
     /**
      * @expectedException \Sabre\VObject\InvalidDataException
      */
-    public function testYearlyByMonthEmptyValue()
-    {
+    function testYearlyByMonthEmptyValue() {
+
         $this->parse(
             'FREQ=YEARLY;COUNT=6;BYMONTHDAY=24;BYMONTH=',
             '2011-04-07 00:00:00',
             []
         );
+
     }
 
-    public function testYearlyByMonthByDay()
-    {
+    function testYearlyByMonthByDay() {
+
         $this->parse(
             'FREQ=YEARLY;COUNT=8;INTERVAL=5;BYMONTH=4,10;BYDAY=1MO,-1SU',
             '2011-04-04 00:00:00',
@@ -486,10 +509,11 @@ class RRuleIteratorTest extends TestCase
                 '2016-10-30 00:00:00',
             ]
         );
+
     }
 
-    public function testYearlyByYearDay()
-    {
+    function testYearlyByYearDay() {
+
         $this->parse(
             'FREQ=YEARLY;COUNT=7;INTERVAL=2;BYYEARDAY=190',
             '2011-07-10 03:07:00',
@@ -503,17 +527,17 @@ class RRuleIteratorTest extends TestCase
                 '2023-07-10 03:07:00',
             ]
         );
+
     }
 
     /*
      * Regression test for #383
      * $parser->next() used to cause an infinite loop.
      */
-    public function testYearlyByYearDayImmutable()
-    {
+    function testYearlyByYearDayImmutable() {
         $start = '2011-07-10 03:07:00';
         $rule = 'FREQ=YEARLY;COUNT=7;INTERVAL=2;BYYEARDAY=190';
-        $tz = 'UTC';
+        $tz = "UTC";
 
         $dt = new DateTimeImmutable($start, new DateTimeZone($tz));
         $parser = new RRuleIterator($rule, $dt);
@@ -524,8 +548,8 @@ class RRuleIteratorTest extends TestCase
         $this->assertEquals($item->format('Y-m-d H:i:s'), '2013-07-10 03:07:00');
     }
 
-    public function testYearlyByYearDayMultiple()
-    {
+    function testYearlyByYearDayMultiple() {
+
         $this->parse(
             'FREQ=YEARLY;COUNT=8;INTERVAL=3;BYYEARDAY=190,301',
             '2011-07-10 14:53:11',
@@ -540,10 +564,11 @@ class RRuleIteratorTest extends TestCase
                 '2020-10-28 14:53:11',
             ]
         );
+
     }
 
-    public function testYearlyByYearDayByDay()
-    {
+    function testYearlyByYearDayByDay() {
+
         $this->parse(
             'FREQ=YEARLY;COUNT=6;BYYEARDAY=97;BYDAY=SA',
             '2001-04-07 14:53:11',
@@ -556,10 +581,11 @@ class RRuleIteratorTest extends TestCase
                 '2034-04-08 14:53:11',
             ]
         );
+
     }
 
-    public function testYearlyByYearDayNegative()
-    {
+    function testYearlyByYearDayNegative() {
+
         $this->parse(
             'FREQ=YEARLY;COUNT=8;BYYEARDAY=-97,-5',
             '2001-09-26 14:53:11',
@@ -574,36 +600,39 @@ class RRuleIteratorTest extends TestCase
                 '2004-12-27 14:53:11',
             ]
         );
+
     }
 
     /**
      * @expectedException \Sabre\VObject\InvalidDataException
      */
-    public function testYearlyByYearDayInvalid390()
-    {
+    function testYearlyByYearDayInvalid390() {
+
         $this->parse(
             'FREQ=YEARLY;COUNT=8;INTERVAL=4;BYYEARDAY=390',
             '2011-04-07 00:00:00',
             [
             ]
         );
+
     }
 
     /**
      * @expectedException \Sabre\VObject\InvalidDataException
      */
-    public function testYearlyByYearDayInvalid0()
-    {
+    function testYearlyByYearDayInvalid0() {
+
         $this->parse(
             'FREQ=YEARLY;COUNT=8;INTERVAL=4;BYYEARDAY=0',
             '2011-04-07 00:00:00',
             [
             ]
         );
+
     }
 
-    public function testFastForward()
-    {
+    function testFastForward() {
+
         // The idea is that we're fast-forwarding too far in the future, so
         // there will be no results left.
         $this->parse(
@@ -612,6 +641,7 @@ class RRuleIteratorTest extends TestCase
             [],
             '2020-05-05 00:00:00'
         );
+
     }
 
     /**
@@ -624,8 +654,8 @@ class RRuleIteratorTest extends TestCase
      *
      * @medium
      */
-    public function testFifthTuesdayProblem()
-    {
+    function testFifthTuesdayProblem() {
+
         $this->parse(
             'FREQ=MONTHLY;INTERVAL=1;UNTIL=20071030T035959Z;BYDAY=5TU',
             '2007-10-04 14:46:42',
@@ -633,14 +663,15 @@ class RRuleIteratorTest extends TestCase
                 '2007-10-04 14:46:42',
             ]
         );
+
     }
 
     /**
      * This bug came from a Fruux customer. This would result in a never-ending
      * request.
      */
-    public function testFastFowardTooFar()
-    {
+    function testFastFowardTooFar() {
+
         $this->parse(
             'FREQ=WEEKLY;BYDAY=MO;UNTIL=20090704T205959Z;INTERVAL=1',
             '2009-04-20 18:00:00',
@@ -658,10 +689,11 @@ class RRuleIteratorTest extends TestCase
                 '2009-06-29 18:00:00',
             ]
         );
+
     }
 
-    public function testValidByWeekNo()
-    {
+    function testValidByWeekNo() {
+
         $this->parse(
             'FREQ=YEARLY;BYWEEKNO=20;BYDAY=TU',
             '2011-02-07 00:00:00',
@@ -680,10 +712,11 @@ class RRuleIteratorTest extends TestCase
                 '2021-05-18 00:00:00',
             ]
         );
+
     }
 
-    public function testNegativeValidByWeekNo()
-    {
+    function testNegativeValidByWeekNo() {
+
         $this->parse(
             'FREQ=YEARLY;BYWEEKNO=-20;BYDAY=TU,FR',
             '2011-09-02 00:00:00',
@@ -702,10 +735,11 @@ class RRuleIteratorTest extends TestCase
                 '2017-08-08 00:00:00',
             ]
         );
+
     }
 
-    public function testTwoValidByWeekNo()
-    {
+    function testTwoValidByWeekNo() {
+
         $this->parse(
             'FREQ=YEARLY;BYWEEKNO=20;BYDAY=TU,FR',
             '2011-09-07 09:00:00',
@@ -724,10 +758,11 @@ class RRuleIteratorTest extends TestCase
                 '2017-05-16 09:00:00',
             ]
         );
+
     }
 
-    public function testValidByWeekNoByDayDefault()
-    {
+    function testValidByWeekNoByDayDefault() {
+
         $this->parse(
             'FREQ=YEARLY;BYWEEKNO=20',
             '2011-05-16 00:00:00',
@@ -746,10 +781,11 @@ class RRuleIteratorTest extends TestCase
                 '2022-05-16 00:00:00',
             ]
         );
+
     }
 
-    public function testMultipleValidByWeekNo()
-    {
+    function testMultipleValidByWeekNo() {
+
         $this->parse(
             'FREQ=YEARLY;BYWEEKNO=20,50;BYDAY=TU,FR',
             '2011-01-16 00:00:00',
@@ -768,26 +804,28 @@ class RRuleIteratorTest extends TestCase
                 '2013-12-10 00:00:00',
             ]
         );
+
     }
 
     /**
      * @expectedException \Sabre\VObject\InvalidDataException
      */
-    public function testInvalidByWeekNo()
-    {
+    function testInvalidByWeekNo() {
+
         $this->parse(
             'FREQ=YEARLY;BYWEEKNO=54',
             '2011-05-16 00:00:00',
             [
             ]
         );
+
     }
 
     /**
      * This also at one point caused an infinite loop. We're keeping the test.
      */
-    public function testYearlyByMonthLoop()
-    {
+    function testYearlyByMonthLoop() {
+
         $this->parse(
             'FREQ=YEARLY;INTERVAL=1;UNTIL=20120203T225959Z;BYMONTH=2;BYSETPOS=1;BYDAY=SU,MO,TU,WE,TH,FR,SA',
             '2012-01-01 15:45:00',
@@ -796,6 +834,8 @@ class RRuleIteratorTest extends TestCase
             ],
             '2012-01-29 23:00:00'
         );
+
+
     }
 
     /**
@@ -805,42 +845,45 @@ class RRuleIteratorTest extends TestCase
      *
      * @expectedException \Sabre\VObject\InvalidDataException
      */
-    public function testZeroInterval()
-    {
+    function testZeroInterval() {
+
         $this->parse(
             'FREQ=YEARLY;INTERVAL=0',
             '2012-08-24 14:57:00',
             [],
             '2013-01-01 23:00:00'
         );
+
     }
 
     /**
      * @expectedException \Sabre\VObject\InvalidDataException
      */
-    public function testInvalidFreq()
-    {
+    function testInvalidFreq() {
+
         $this->parse(
             'FREQ=SMONTHLY;INTERVAL=3;UNTIL=20111025T000000Z',
             '2011-10-07',
             []
         );
+
     }
 
     /**
      * @expectedException \Sabre\VObject\InvalidDataException
      */
-    public function testByDayBadOffset()
-    {
+    function testByDayBadOffset() {
+
         $this->parse(
             'FREQ=WEEKLY;INTERVAL=1;COUNT=4;BYDAY=0MO;WKST=SA',
             '2014-08-01 00:00:00',
             []
         );
+
     }
 
-    public function testUntilBeginHasTimezone()
-    {
+    function testUntilBeginHasTimezone() {
+
         $this->parse(
             'FREQ=WEEKLY;UNTIL=20131118T183000',
             '2013-09-23 18:30:00',
@@ -858,10 +901,11 @@ class RRuleIteratorTest extends TestCase
             null,
             'America/New_York'
         );
+
     }
 
-    public function testUntilBeforeDtStart()
-    {
+    function testUntilBeforeDtStart() {
+
         $this->parse(
             'FREQ=DAILY;UNTIL=20140101T000000Z',
             '2014-08-02 00:15:00',
@@ -869,10 +913,11 @@ class RRuleIteratorTest extends TestCase
                 '2014-08-02 00:15:00',
             ]
         );
+
     }
 
-    public function testIgnoredStuff()
-    {
+    function testIgnoredStuff() {
+
         $this->parse(
             'FREQ=DAILY;BYSECOND=1;BYMINUTE=1;BYYEARDAY=1;BYWEEKNO=1;COUNT=2',
             '2014-08-02 00:15:00',
@@ -881,10 +926,11 @@ class RRuleIteratorTest extends TestCase
                 '2014-08-03 00:15:00',
             ]
         );
+
     }
 
-    public function testMinusFifthThursday()
-    {
+    function testMinusFifthThursday() {
+
         $this->parse(
             'FREQ=MONTHLY;BYDAY=-4TH,-5TH;COUNT=4',
             '2015-01-01 00:15:00',
@@ -892,25 +938,27 @@ class RRuleIteratorTest extends TestCase
                 '2015-01-01 00:15:00',
                 '2015-01-08 00:15:00',
                 '2015-02-05 00:15:00',
-                '2015-03-05 00:15:00',
+                '2015-03-05 00:15:00'
             ]
         );
+
     }
 
     /**
      * @expectedException \Sabre\VObject\InvalidDataException
      */
-    public function testUnsupportedPart()
-    {
+    function testUnsupportedPart() {
+
         $this->parse(
             'FREQ=DAILY;BYWODAN=1',
             '2014-08-02 00:15:00',
             []
         );
+
     }
 
-    public function testIteratorFunctions()
-    {
+    function testIteratorFunctions() {
+
         $parser = new RRuleIterator('FREQ=DAILY', new DateTime('2014-08-02 00:00:13'));
         $parser->next();
         $this->assertEquals(
@@ -932,10 +980,11 @@ class RRuleIteratorTest extends TestCase
             0,
             $parser->key()
         );
+
     }
 
-    public function parse($rule, $start, $expected, $fastForward = null, $tz = 'UTC')
-    {
+    function parse($rule, $start, $expected, $fastForward = null, $tz = 'UTC') {
+
         $dt = new DateTime($start, new DateTimeZone($tz));
         $parser = new RRuleIterator($rule, $dt);
 
@@ -945,6 +994,7 @@ class RRuleIteratorTest extends TestCase
 
         $result = [];
         while ($parser->valid()) {
+
             $item = $parser->current();
             $result[] = $item->format('Y-m-d H:i:s');
 
@@ -952,11 +1002,14 @@ class RRuleIteratorTest extends TestCase
                 break;
             }
             $parser->next();
+
         }
 
         $this->assertEquals(
             $expected,
             $result
         );
+
     }
+
 }
