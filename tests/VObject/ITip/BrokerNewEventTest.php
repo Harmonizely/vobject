@@ -2,10 +2,10 @@
 
 namespace Sabre\VObject\ITip;
 
-class BrokerNewEventTest extends BrokerTester
-{
-    public function testNoAttendee()
-    {
+class BrokerNewEventTest extends BrokerTester {
+
+    function testNoAttendee() {
+
         $message = <<<ICS
 BEGIN:VCALENDAR
 BEGIN:VEVENT
@@ -17,10 +17,11 @@ END:VCALENDAR
 ICS;
 
         $result = $this->parse(null, $message, []);
+
     }
 
-    public function testVTODO()
-    {
+    function testVTODO() {
+
         $message = <<<ICS
 BEGIN:VCALENDAR
 BEGIN:VTODO
@@ -30,10 +31,11 @@ END:VCALENDAR
 ICS;
 
         $result = $this->parse(null, $message, []);
+
     }
 
-    public function testSimpleInvite()
-    {
+    function testSimpleInvite() {
+
         $message = <<<ICS
 BEGIN:VCALENDAR
 VERSION:2.0
@@ -66,25 +68,26 @@ ICS;
 
         $expected = [
             [
-                'uid' => 'foobar',
-                'method' => 'REQUEST',
-                'component' => 'VEVENT',
-                'sender' => 'mailto:strunk@example.org',
-                'senderName' => 'Strunk',
-                'recipient' => 'mailto:white@example.org',
+                'uid'           => 'foobar',
+                'method'        => 'REQUEST',
+                'component'     => 'VEVENT',
+                'sender'        => 'mailto:strunk@example.org',
+                'senderName'    => 'Strunk',
+                'recipient'     => 'mailto:white@example.org',
                 'recipientName' => 'White',
-                'message' => $expectedMessage,
+                'message'       => $expectedMessage,
             ],
         ];
 
         $this->parse(null, $message, $expected, 'mailto:strunk@example.org');
+
     }
 
     /**
      * @expectedException \Sabre\VObject\ITip\ITipException
      */
-    public function testBrokenEventUIDMisMatch()
-    {
+    function testBrokenEventUIDMisMatch() {
+
         $message = <<<ICS
 BEGIN:VCALENDAR
 VERSION:2.0
@@ -102,13 +105,13 @@ END:VCALENDAR
 ICS;
 
         $this->parse(null, $message, [], 'mailto:strunk@example.org');
-    }
 
+    }
     /**
      * @expectedException \Sabre\VObject\ITip\ITipException
      */
-    public function testBrokenEventOrganizerMisMatch()
-    {
+    function testBrokenEventOrganizerMisMatch() {
+
         $message = <<<ICS
 BEGIN:VCALENDAR
 VERSION:2.0
@@ -126,10 +129,11 @@ END:VCALENDAR
 ICS;
 
         $this->parse(null, $message, [], 'mailto:strunk@example.org');
+
     }
 
-    public function testRecurrenceInvite()
-    {
+    function testRecurrenceInvite() {
+
         $message = <<<ICS
 BEGIN:VCALENDAR
 VERSION:2.0
@@ -159,14 +163,14 @@ ICS;
 
         $expected = [
             [
-                'uid' => 'foobar',
-                'method' => 'REQUEST',
-                'component' => 'VEVENT',
-                'sender' => 'mailto:strunk@example.org',
-                'senderName' => 'Strunk',
-                'recipient' => 'mailto:one@example.org',
+                'uid'           => 'foobar',
+                'method'        => 'REQUEST',
+                'component'     => 'VEVENT',
+                'sender'        => 'mailto:strunk@example.org',
+                'senderName'    => 'Strunk',
+                'recipient'     => 'mailto:one@example.org',
                 'recipientName' => 'One',
-                'message' => <<<ICS
+                'message'       => <<<ICS
 BEGIN:VCALENDAR
 VERSION:2.0
 PRODID:-//Sabre//Sabre VObject $version//EN
@@ -184,16 +188,17 @@ EXDATE:20140717T120000Z,20140718T120000Z
 END:VEVENT
 END:VCALENDAR
 ICS
+
             ],
             [
-                'uid' => 'foobar',
-                'method' => 'REQUEST',
-                'component' => 'VEVENT',
-                'sender' => 'mailto:strunk@example.org',
-                'senderName' => 'Strunk',
-                'recipient' => 'mailto:two@example.org',
+                'uid'           => 'foobar',
+                'method'        => 'REQUEST',
+                'component'     => 'VEVENT',
+                'sender'        => 'mailto:strunk@example.org',
+                'senderName'    => 'Strunk',
+                'recipient'     => 'mailto:two@example.org',
                 'recipientName' => 'Two',
-                'message' => <<<ICS
+                'message'       => <<<ICS
 BEGIN:VCALENDAR
 VERSION:2.0
 PRODID:-//Sabre//Sabre VObject $version//EN
@@ -220,16 +225,17 @@ DURATION:PT1H
 END:VEVENT
 END:VCALENDAR
 ICS
+
             ],
             [
-                'uid' => 'foobar',
-                'method' => 'REQUEST',
-                'component' => 'VEVENT',
-                'sender' => 'mailto:strunk@example.org',
-                'senderName' => 'Strunk',
-                'recipient' => 'mailto:three@example.org',
+                'uid'           => 'foobar',
+                'method'        => 'REQUEST',
+                'component'     => 'VEVENT',
+                'sender'        => 'mailto:strunk@example.org',
+                'senderName'    => 'Strunk',
+                'recipient'     => 'mailto:three@example.org',
                 'recipientName' => 'Three',
-                'message' => <<<ICS
+                'message'       => <<<ICS
 BEGIN:VCALENDAR
 VERSION:2.0
 PRODID:-//Sabre//Sabre VObject $version//EN
@@ -246,14 +252,16 @@ DURATION:PT1H
 END:VEVENT
 END:VCALENDAR
 ICS
+
             ],
         ];
 
         $this->parse(null, $message, $expected, 'mailto:strunk@example.org');
+
     }
 
-    public function testRecurrenceInvite2()
-    {
+    function testRecurrenceInvite2() {
+
         // This method tests a nearly identical path, but in this case the
         // master event does not have an EXDATE.
         $message = <<<ICS
@@ -284,14 +292,14 @@ ICS;
 
         $expected = [
             [
-                'uid' => 'foobar',
-                'method' => 'REQUEST',
-                'component' => 'VEVENT',
-                'sender' => 'mailto:strunk@example.org',
-                'senderName' => 'Strunk',
-                'recipient' => 'mailto:one@example.org',
+                'uid'           => 'foobar',
+                'method'        => 'REQUEST',
+                'component'     => 'VEVENT',
+                'sender'        => 'mailto:strunk@example.org',
+                'senderName'    => 'Strunk',
+                'recipient'     => 'mailto:one@example.org',
                 'recipientName' => 'One',
-                'message' => <<<ICS
+                'message'       => <<<ICS
 BEGIN:VCALENDAR
 VERSION:2.0
 PRODID:-//Sabre//Sabre VObject $version//EN
@@ -309,16 +317,17 @@ EXDATE:20140718T120000Z
 END:VEVENT
 END:VCALENDAR
 ICS
+
             ],
             [
-                'uid' => 'foobar',
-                'method' => 'REQUEST',
-                'component' => 'VEVENT',
-                'sender' => 'mailto:strunk@example.org',
-                'senderName' => 'Strunk',
-                'recipient' => 'mailto:two@example.org',
+                'uid'           => 'foobar',
+                'method'        => 'REQUEST',
+                'component'     => 'VEVENT',
+                'sender'        => 'mailto:strunk@example.org',
+                'senderName'    => 'Strunk',
+                'recipient'     => 'mailto:two@example.org',
                 'recipientName' => 'Two',
-                'message' => <<<ICS
+                'message'       => <<<ICS
 BEGIN:VCALENDAR
 VERSION:2.0
 PRODID:-//Sabre//Sabre VObject $version//EN
@@ -344,16 +353,17 @@ DTEND:20140718T130000Z
 END:VEVENT
 END:VCALENDAR
 ICS
+
             ],
             [
-                'uid' => 'foobar',
-                'method' => 'REQUEST',
-                'component' => 'VEVENT',
-                'sender' => 'mailto:strunk@example.org',
-                'senderName' => 'Strunk',
-                'recipient' => 'mailto:three@example.org',
+                'uid'           => 'foobar',
+                'method'        => 'REQUEST',
+                'component'     => 'VEVENT',
+                'sender'        => 'mailto:strunk@example.org',
+                'senderName'    => 'Strunk',
+                'recipient'     => 'mailto:three@example.org',
                 'recipientName' => 'Three',
-                'message' => <<<ICS
+                'message'       => <<<ICS
 BEGIN:VCALENDAR
 VERSION:2.0
 PRODID:-//Sabre//Sabre VObject $version//EN
@@ -370,14 +380,16 @@ DTEND:20140718T130000Z
 END:VEVENT
 END:VCALENDAR
 ICS
+
             ],
         ];
 
         $this->parse(null, $message, $expected, 'mailto:strunk@example.org');
+
     }
 
-    public function testRecurrenceInvite3()
-    {
+    function testRecurrenceInvite3() {
+
         // This method tests a complex rrule
         $message = <<<ICS
 BEGIN:VCALENDAR
@@ -397,14 +409,14 @@ ICS;
 
         $expected = [
             [
-                'uid' => 'foobar',
-                'method' => 'REQUEST',
-                'component' => 'VEVENT',
-                'sender' => 'mailto:strunk@example.org',
-                'senderName' => 'Strunk',
-                'recipient' => 'mailto:one@example.org',
+                'uid'           => 'foobar',
+                'method'        => 'REQUEST',
+                'component'     => 'VEVENT',
+                'sender'        => 'mailto:strunk@example.org',
+                'senderName'    => 'Strunk',
+                'recipient'     => 'mailto:one@example.org',
                 'recipientName' => 'One',
-                'message' => <<<ICS
+                'message'       => <<<ICS
 BEGIN:VCALENDAR
 VERSION:2.0
 PRODID:-//Sabre//Sabre VObject $version//EN
@@ -420,14 +432,16 @@ RRULE:FREQ=WEEKLY;INTERVAL=2;COUNT=8;BYDAY=SA,SU
 END:VEVENT
 END:VCALENDAR
 ICS
+
             ],
         ];
 
         $this->parse(null, $message, $expected, 'mailto:strunk@example.org');
+
     }
 
-    public function testScheduleAgentClient()
-    {
+    function testScheduleAgentClient() {
+
         $message = <<<ICS
 BEGIN:VCALENDAR
 VERSION:2.0
@@ -444,13 +458,14 @@ ICS;
         $version = \Sabre\VObject\Version::VERSION;
 
         $this->parse(null, $message, [], 'mailto:strunk@example.org');
+
     }
 
     /**
-     * @expectedException \Sabre\VObject\ITip\ITipException
+     * @expectedException Sabre\VObject\ITip\ITipException
      */
-    public function testMultipleUID()
-    {
+    function testMultipleUID() {
+
         $message = <<<ICS
 BEGIN:VCALENDAR
 VERSION:2.0
@@ -477,13 +492,14 @@ ICS;
 
         $version = \Sabre\VObject\Version::VERSION;
         $this->parse(null, $message, [], 'mailto:strunk@example.org');
+
     }
 
     /**
-     * @expectedException \Sabre\VObject\ITip\SameOrganizerForAllComponentsException
+     * @expectedException Sabre\VObject\ITip\SameOrganizerForAllComponentsException
      */
-    public function testChangingOrganizers()
-    {
+    function testChangingOrganizers() {
+
         $message = <<<ICS
 BEGIN:VCALENDAR
 VERSION:2.0
@@ -508,58 +524,12 @@ END:VEVENT
 END:VCALENDAR
 ICS;
 
+        $version = \Sabre\VObject\Version::VERSION;
         $this->parse(null, $message, [], 'mailto:strunk@example.org');
+
     }
+    function testNoOrganizerHasAttendee() {
 
-    public function testCaseInsensitiveOrganizers()
-    {
-        $message = <<<ICS
-BEGIN:VCALENDAR
-VERSION:2.0
-BEGIN:VEVENT
-UID:foobar
-ORGANIZER;CN=Strunk:mailto:strunk@example.org
-ATTENDEE;CN=One:mailto:one@example.org
-ATTENDEE;CN=Two:mailto:two@example.org
-DTSTART:20140716T120000Z
-DTEND:20140716T130000Z
-RRULE:FREQ=DAILY
-END:VEVENT
-BEGIN:VEVENT
-UID:foobar
-RECURRENCE-ID:20140718T120000Z
-ORGANIZER;CN=Strunk:mailto:Strunk@example.org
-ATTENDEE;CN=Two:mailto:two@example.org
-ATTENDEE;CN=Three:mailto:three@example.org
-DTSTART:20140718T120000Z
-DTEND:20140718T130000Z
-END:VEVENT
-END:VCALENDAR
-ICS;
-
-        $this->parse(null, $message, [
-            [
-                'uid' => 'foobar',
-                'method' => 'REQUEST',
-                'component' => 'VEVENT',
-                'sender' => 'mailto:strunk@example.org',
-            ],
-            [
-                'uid' => 'foobar',
-                'method' => 'REQUEST',
-                'component' => 'VEVENT',
-                'sender' => 'mailto:strunk@example.org',
-            ],
-            ['uid' => 'foobar',
-                'method' => 'REQUEST',
-                'component' => 'VEVENT',
-                'sender' => 'mailto:strunk@example.org',
-            ],
-        ], 'mailto:strunk@example.org');
-    }
-
-    public function testNoOrganizerHasAttendee()
-    {
         $message = <<<ICS
 BEGIN:VCALENDAR
 BEGIN:VEVENT
@@ -572,5 +542,7 @@ END:VCALENDAR
 ICS;
 
         $this->parse(null, $message, [], 'mailto:strunk@example.org');
+
     }
+
 }

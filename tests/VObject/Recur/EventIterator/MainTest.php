@@ -8,10 +8,10 @@ use PHPUnit\Framework\TestCase;
 use Sabre\VObject\Component\VCalendar;
 use Sabre\VObject\Recur\EventIterator;
 
-class MainTest extends TestCase
-{
-    public function testValues()
-    {
+class MainTest extends TestCase {
+
+    function testValues() {
+
         $vcal = new VCalendar();
         $ev = $vcal->createComponent('VEVENT');
         $ev->UID = 'bla';
@@ -23,17 +23,18 @@ class MainTest extends TestCase
 
         $vcal->add($ev);
 
-        $it = new EventIterator($vcal, (string) $ev->UID);
+        $it = new EventIterator($vcal, (string)$ev->UID);
 
         $this->assertTrue($it->isInfinite());
+
     }
 
     /**
      * @expectedException \Sabre\VObject\InvalidDataException
      * @depends testValues
      */
-    public function testInvalidFreq()
-    {
+    function testInvalidFreq() {
+
         $vcal = new VCalendar();
         $ev = $vcal->createComponent('VEVENT');
         $ev->RRULE = 'FREQ=SMONTHLY;INTERVAL=3;UNTIL=20111025T000000Z';
@@ -44,32 +45,35 @@ class MainTest extends TestCase
         $ev->add($dtStart);
         $vcal->add($ev);
 
-        $it = new EventIterator($vcal, (string) $ev->UID);
+        $it = new EventIterator($vcal, (string)$ev->UID);
+
     }
 
     /**
-     * @expectedException \InvalidArgumentException
+     * @expectedException InvalidArgumentException
      */
-    public function testVCalendarNoUID()
-    {
+    function testVCalendarNoUID() {
+
         $vcal = new VCalendar();
         $it = new EventIterator($vcal);
+
     }
 
     /**
-     * @expectedException \InvalidArgumentException
+     * @expectedException InvalidArgumentException
      */
-    public function testVCalendarInvalidUID()
-    {
+    function testVCalendarInvalidUID() {
+
         $vcal = new VCalendar();
         $it = new EventIterator($vcal, 'foo');
+
     }
 
     /**
      * @depends testValues
      */
-    public function testHourly()
-    {
+    function testHourly() {
+
         $vcal = new VCalendar();
         $ev = $vcal->createComponent('VEVENT');
 
@@ -87,12 +91,12 @@ class MainTest extends TestCase
         $max = 12;
         $result = [];
         foreach ($it as $item) {
-            $result[] = $item;
-            --$max;
 
-            if (!$max) {
-                break;
-            }
+            $result[] = $item;
+            $max--;
+
+            if (!$max) break;
+
         }
 
         $tz = new DateTimeZone('UTC');
@@ -114,13 +118,14 @@ class MainTest extends TestCase
             ],
             $result
         );
+
     }
 
     /**
      * @depends testValues
      */
-    public function testDaily()
-    {
+    function testDaily() {
+
         $vcal = new VCalendar();
         $ev = $vcal->createComponent('VEVENT');
 
@@ -139,12 +144,12 @@ class MainTest extends TestCase
         $max = 12;
         $result = [];
         foreach ($it as $item) {
-            $result[] = $item;
-            --$max;
 
-            if (!$max) {
-                break;
-            }
+            $result[] = $item;
+            $max--;
+
+            if (!$max) break;
+
         }
 
         $tz = new DateTimeZone('UTC');
@@ -161,13 +166,14 @@ class MainTest extends TestCase
             ],
             $result
         );
+
     }
 
     /**
      * @depends testValues
      */
-    public function testNoRRULE()
-    {
+    function testNoRRULE() {
+
         $vcal = new VCalendar();
         $ev = $vcal->createComponent('VEVENT');
 
@@ -185,12 +191,12 @@ class MainTest extends TestCase
         $max = 12;
         $result = [];
         foreach ($it as $item) {
-            $result[] = $item;
-            --$max;
 
-            if (!$max) {
-                break;
-            }
+            $result[] = $item;
+            $max--;
+
+            if (!$max) break;
+
         }
 
         $tz = new DateTimeZone('UTC');
@@ -201,13 +207,14 @@ class MainTest extends TestCase
             ],
             $result
         );
+
     }
 
     /**
      * @depends testValues
      */
-    public function testDailyByDayByHour()
-    {
+    function testDailyByDayByHour() {
+
         $vcal = new VCalendar();
         $ev = $vcal->createComponent('VEVENT');
 
@@ -220,18 +227,18 @@ class MainTest extends TestCase
 
         $vcal->add($ev);
 
-        $it = new EventIterator($vcal, (string) $ev->UID);
+        $it = new EventIterator($vcal, (string)$ev->UID);
 
         // Grabbing the next 12 items
         $max = 12;
         $result = [];
         foreach ($it as $item) {
-            $result[] = $item;
-            --$max;
 
-            if (!$max) {
-                break;
-            }
+            $result[] = $item;
+            $max--;
+
+            if (!$max) break;
+
         }
 
         $tz = new DateTimeZone('UTC');
@@ -253,13 +260,14 @@ class MainTest extends TestCase
             ],
             $result
         );
+
     }
 
     /**
      * @depends testValues
      */
-    public function testDailyByHour()
-    {
+    function testDailyByHour() {
+
         $vcal = new VCalendar();
         $ev = $vcal->createComponent('VEVENT');
 
@@ -272,18 +280,18 @@ class MainTest extends TestCase
 
         $vcal->add($ev);
 
-        $it = new EventIterator($vcal, (string) $ev->UID);
+        $it = new EventIterator($vcal, (string)$ev->UID);
 
         // Grabbing the next 12 items
         $max = 12;
         $result = [];
         foreach ($it as $item) {
-            $result[] = $item;
-            --$max;
 
-            if (!$max) {
-                break;
-            }
+            $result[] = $item;
+            $max--;
+
+            if (!$max) break;
+
         }
 
         $tz = new DateTimeZone('UTC');
@@ -305,13 +313,14 @@ class MainTest extends TestCase
             ],
             $result
         );
+
     }
 
     /**
      * @depends testValues
      */
-    public function testDailyByDay()
-    {
+    function testDailyByDay() {
+
         $vcal = new VCalendar();
         $ev = $vcal->createComponent('VEVENT');
 
@@ -324,18 +333,18 @@ class MainTest extends TestCase
 
         $vcal->add($ev);
 
-        $it = new EventIterator($vcal, (string) $ev->UID);
+        $it = new EventIterator($vcal, (string)$ev->UID);
 
         // Grabbing the next 12 items
         $max = 12;
         $result = [];
         foreach ($it as $item) {
-            $result[] = $item;
-            --$max;
 
-            if (!$max) {
-                break;
-            }
+            $result[] = $item;
+            $max--;
+
+            if (!$max) break;
+
         }
 
         $tz = new DateTimeZone('UTC');
@@ -357,13 +366,14 @@ class MainTest extends TestCase
             ],
             $result
         );
+
     }
 
     /**
      * @depends testValues
      */
-    public function testWeekly()
-    {
+    function testWeekly() {
+
         $vcal = new VCalendar();
         $ev = $vcal->createComponent('VEVENT');
 
@@ -376,18 +386,18 @@ class MainTest extends TestCase
 
         $vcal->add($ev);
 
-        $it = new EventIterator($vcal, (string) $ev->UID);
+        $it = new EventIterator($vcal, (string)$ev->UID);
 
         // Max is to prevent overflow
         $max = 12;
         $result = [];
         foreach ($it as $item) {
-            $result[] = $item;
-            --$max;
 
-            if (!$max) {
-                break;
-            }
+            $result[] = $item;
+            $max--;
+
+            if (!$max) break;
+
         }
 
         $tz = new DateTimeZone('UTC');
@@ -407,13 +417,14 @@ class MainTest extends TestCase
             ],
             $result
         );
+
     }
 
     /**
      * @depends testValues
      */
-    public function testWeeklyByDayByHour()
-    {
+    function testWeeklyByDayByHour() {
+
         $vcal = new VCalendar();
         $ev = $vcal->createComponent('VEVENT');
 
@@ -426,18 +437,18 @@ class MainTest extends TestCase
 
         $vcal->add($ev);
 
-        $it = new EventIterator($vcal, (string) $ev->UID);
+        $it = new EventIterator($vcal, (string)$ev->UID);
 
         // Grabbing the next 12 items
         $max = 15;
         $result = [];
         foreach ($it as $item) {
-            $result[] = $item;
-            --$max;
 
-            if (!$max) {
-                break;
-            }
+            $result[] = $item;
+            $max--;
+
+            if (!$max) break;
+
         }
 
         $tz = new DateTimeZone('UTC');
@@ -462,13 +473,14 @@ class MainTest extends TestCase
             ],
             $result
         );
+
     }
 
     /**
      * @depends testValues
      */
-    public function testWeeklyByDaySpecificHour()
-    {
+    function testWeeklyByDaySpecificHour() {
+
         $vcal = new VCalendar();
         $ev = $vcal->createComponent('VEVENT');
 
@@ -481,18 +493,18 @@ class MainTest extends TestCase
 
         $vcal->add($ev);
 
-        $it = new EventIterator($vcal, (string) $ev->UID);
+        $it = new EventIterator($vcal, (string)$ev->UID);
 
         // Grabbing the next 12 items
         $max = 12;
         $result = [];
         foreach ($it as $item) {
-            $result[] = $item;
-            --$max;
 
-            if (!$max) {
-                break;
-            }
+            $result[] = $item;
+            $max--;
+
+            if (!$max) break;
+
         }
 
         $tz = new DateTimeZone('UTC');
@@ -514,13 +526,14 @@ class MainTest extends TestCase
             ],
             $result
         );
+
     }
 
     /**
      * @depends testValues
      */
-    public function testWeeklyByDay()
-    {
+    function testWeeklyByDay() {
+
         $vcal = new VCalendar();
         $ev = $vcal->createComponent('VEVENT');
 
@@ -533,18 +546,18 @@ class MainTest extends TestCase
 
         $vcal->add($ev);
 
-        $it = new EventIterator($vcal, (string) $ev->UID);
+        $it = new EventIterator($vcal, (string)$ev->UID);
 
         // Grabbing the next 12 items
         $max = 12;
         $result = [];
         foreach ($it as $item) {
-            $result[] = $item;
-            --$max;
 
-            if (!$max) {
-                break;
-            }
+            $result[] = $item;
+            $max--;
+
+            if (!$max) break;
+
         }
 
         $tz = new DateTimeZone('UTC');
@@ -566,13 +579,14 @@ class MainTest extends TestCase
             ],
             $result
         );
+
     }
 
     /**
      * @depends testValues
      */
-    public function testMonthly()
-    {
+    function testMonthly() {
+
         $vcal = new VCalendar();
         $ev = $vcal->createComponent('VEVENT');
 
@@ -585,17 +599,17 @@ class MainTest extends TestCase
 
         $vcal->add($ev);
 
-        $it = new EventIterator($vcal, (string) $ev->UID);
+        $it = new EventIterator($vcal, (string)$ev->UID);
 
         $max = 14;
         $result = [];
         foreach ($it as $item) {
-            $result[] = $item;
-            --$max;
 
-            if (!$max) {
-                break;
-            }
+            $result[] = $item;
+            $max--;
+
+            if (!$max) break;
+
         }
 
         $tz = new DateTimeZone('UTC');
@@ -610,13 +624,15 @@ class MainTest extends TestCase
             ],
             $result
         );
+
+
     }
 
     /**
      * @depends testValues
      */
-    public function testMonthlyEndOfMonth()
-    {
+    function testMonthlyEndOfMonth() {
+
         $vcal = new VCalendar();
         $ev = $vcal->createComponent('VEVENT');
 
@@ -629,17 +645,17 @@ class MainTest extends TestCase
 
         $vcal->add($ev);
 
-        $it = new EventIterator($vcal, (string) $ev->UID);
+        $it = new EventIterator($vcal, (string)$ev->UID);
 
         $max = 14;
         $result = [];
         foreach ($it as $item) {
-            $result[] = $item;
-            --$max;
 
-            if (!$max) {
-                break;
-            }
+            $result[] = $item;
+            $max--;
+
+            if (!$max) break;
+
         }
 
         $tz = new DateTimeZone('UTC');
@@ -661,13 +677,15 @@ class MainTest extends TestCase
             ],
             $result
         );
+
+
     }
 
     /**
      * @depends testValues
      */
-    public function testMonthlyByMonthDay()
-    {
+    function testMonthlyByMonthDay() {
+
         $vcal = new VCalendar();
         $ev = $vcal->createComponent('VEVENT');
 
@@ -680,17 +698,17 @@ class MainTest extends TestCase
 
         $vcal->add($ev);
 
-        $it = new EventIterator($vcal, (string) $ev->UID);
+        $it = new EventIterator($vcal, (string)$ev->UID);
 
         $max = 14;
         $result = [];
         foreach ($it as $item) {
-            $result[] = $item;
-            --$max;
 
-            if (!$max) {
-                break;
-            }
+            $result[] = $item;
+            $max--;
+
+            if (!$max) break;
+
         }
 
         $tz = new DateTimeZone('UTC');
@@ -709,6 +727,7 @@ class MainTest extends TestCase
             ],
             $result
         );
+
     }
 
     /**
@@ -718,8 +737,8 @@ class MainTest extends TestCase
      * @depends testValues
      * @medium
      */
-    public function testMonthlyByDay()
-    {
+    function testMonthlyByDay() {
+
         $vcal = new VCalendar();
         $ev = $vcal->createComponent('VEVENT');
 
@@ -732,17 +751,17 @@ class MainTest extends TestCase
 
         $vcal->add($ev);
 
-        $it = new EventIterator($vcal, (string) $ev->UID);
+        $it = new EventIterator($vcal, (string)$ev->UID);
 
         $max = 20;
         $result = [];
         foreach ($it as $item) {
-            $result[] = $item;
-            --$max;
 
-            if (!$max) {
-                break;
-            }
+            $result[] = $item;
+            $max--;
+
+            if (!$max) break;
+
         }
 
         $tz = new DateTimeZone('UTC');
@@ -768,13 +787,14 @@ class MainTest extends TestCase
             ],
             $result
         );
+
     }
 
     /**
      * @depends testValues
      */
-    public function testMonthlyByDayByMonthDay()
-    {
+    function testMonthlyByDayByMonthDay() {
+
         $vcal = new VCalendar();
         $ev = $vcal->createComponent('VEVENT');
 
@@ -787,17 +807,17 @@ class MainTest extends TestCase
 
         $vcal->add($ev);
 
-        $it = new EventIterator($vcal, (string) $ev->UID);
+        $it = new EventIterator($vcal, (string)$ev->UID);
 
         $max = 20;
         $result = [];
         foreach ($it as $item) {
-            $result[] = $item;
-            --$max;
 
-            if (!$max) {
-                break;
-            }
+            $result[] = $item;
+            $max--;
+
+            if (!$max) break;
+
         }
 
         $tz = new DateTimeZone('UTC');
@@ -817,13 +837,14 @@ class MainTest extends TestCase
             ],
             $result
         );
+
     }
 
     /**
      * @depends testValues
      */
-    public function testMonthlyByDayBySetPos()
-    {
+    function testMonthlyByDayBySetPos() {
+
         $vcal = new VCalendar();
         $ev = $vcal->createComponent('VEVENT');
 
@@ -836,17 +857,17 @@ class MainTest extends TestCase
 
         $vcal->add($ev);
 
-        $it = new EventIterator($vcal, (string) $ev->UID);
+        $it = new EventIterator($vcal, (string)$ev->UID);
 
         $max = 20;
         $result = [];
         foreach ($it as $item) {
-            $result[] = $item;
-            --$max;
 
-            if (!$max) {
-                break;
-            }
+            $result[] = $item;
+            $max--;
+
+            if (!$max) break;
+
         }
 
         $tz = new DateTimeZone('UTC');
@@ -866,13 +887,14 @@ class MainTest extends TestCase
             ],
             $result
         );
+
     }
 
     /**
      * @depends testValues
      */
-    public function testYearly()
-    {
+    function testYearly() {
+
         $vcal = new VCalendar();
         $ev = $vcal->createComponent('VEVENT');
 
@@ -885,17 +907,17 @@ class MainTest extends TestCase
 
         $vcal->add($ev);
 
-        $it = new EventIterator($vcal, (string) $ev->UID);
+        $it = new EventIterator($vcal, (string)$ev->UID);
 
         $max = 20;
         $result = [];
         foreach ($it as $item) {
-            $result[] = $item;
-            --$max;
 
-            if (!$max) {
-                break;
-            }
+            $result[] = $item;
+            $max--;
+
+            if (!$max) break;
+
         }
 
         $tz = new DateTimeZone('UTC');
@@ -915,13 +937,14 @@ class MainTest extends TestCase
             ],
             $result
         );
+
     }
 
     /**
      * @depends testValues
      */
-    public function testYearlyLeapYear()
-    {
+    function testYearlyLeapYear() {
+
         $vcal = new VCalendar();
         $ev = $vcal->createComponent('VEVENT');
 
@@ -934,17 +957,17 @@ class MainTest extends TestCase
 
         $vcal->add($ev);
 
-        $it = new EventIterator($vcal, (string) $ev->UID);
+        $it = new EventIterator($vcal, (string)$ev->UID);
 
         $max = 20;
         $result = [];
         foreach ($it as $item) {
-            $result[] = $item;
-            --$max;
 
-            if (!$max) {
-                break;
-            }
+            $result[] = $item;
+            $max--;
+
+            if (!$max) break;
+
         }
 
         $tz = new DateTimeZone('UTC');
@@ -957,13 +980,14 @@ class MainTest extends TestCase
             ],
             $result
         );
+
     }
 
     /**
      * @depends testValues
      */
-    public function testYearlyByMonth()
-    {
+    function testYearlyByMonth() {
+
         $vcal = new VCalendar();
         $ev = $vcal->createComponent('VEVENT');
 
@@ -976,17 +1000,17 @@ class MainTest extends TestCase
 
         $vcal->add($ev);
 
-        $it = new EventIterator($vcal, (string) $ev->UID);
+        $it = new EventIterator($vcal, (string)$ev->UID);
 
         $max = 20;
         $result = [];
         foreach ($it as $item) {
-            $result[] = $item;
-            --$max;
 
-            if (!$max) {
-                break;
-            }
+            $result[] = $item;
+            $max--;
+
+            if (!$max) break;
+
         }
 
         $tz = new DateTimeZone('UTC');
@@ -1004,13 +1028,14 @@ class MainTest extends TestCase
             ],
             $result
         );
+
     }
 
     /**
      * @depends testValues
      */
-    public function testYearlyByMonthByDay()
-    {
+    function testYearlyByMonthByDay() {
+
         $vcal = new VCalendar();
         $ev = $vcal->createComponent('VEVENT');
 
@@ -1023,17 +1048,17 @@ class MainTest extends TestCase
 
         $vcal->add($ev);
 
-        $it = new EventIterator($vcal, (string) $ev->UID);
+        $it = new EventIterator($vcal, (string)$ev->UID);
 
         $max = 20;
         $result = [];
         foreach ($it as $item) {
-            $result[] = $item;
-            --$max;
 
-            if (!$max) {
-                break;
-            }
+            $result[] = $item;
+            $max--;
+
+            if (!$max) break;
+
         }
 
         $tz = new DateTimeZone('UTC');
@@ -1051,13 +1076,14 @@ class MainTest extends TestCase
             ],
             $result
         );
+
     }
 
     /**
      * @depends testValues
      */
-    public function testFastForward()
-    {
+    function testFastForward() {
+
         $vcal = new VCalendar();
         $ev = $vcal->createComponent('VEVENT');
 
@@ -1070,7 +1096,7 @@ class MainTest extends TestCase
 
         $vcal->add($ev);
 
-        $it = new EventIterator($vcal, (string) $ev->UID);
+        $it = new EventIterator($vcal, (string)$ev->UID);
 
         // The idea is that we're fast-forwarding too far in the future, so
         // there will be no results left.
@@ -1079,23 +1105,23 @@ class MainTest extends TestCase
         $max = 20;
         $result = [];
         while ($item = $it->current()) {
-            $result[] = $item;
-            --$max;
 
-            if (!$max) {
-                break;
-            }
+            $result[] = $item;
+            $max--;
+
+            if (!$max) break;
             $it->next();
+
         }
 
         $this->assertEquals([], $result);
+
     }
 
     /**
      * @depends testValues
      */
-    public function testFastForwardAllDayEventThatStopAtTheStartTime()
-    {
+    function testFastForwardAllDayEventThatStopAtTheStartTime() {
         $vcal = new VCalendar();
         $ev = $vcal->createComponent('VEVENT');
 
@@ -1112,7 +1138,7 @@ class MainTest extends TestCase
 
         $vcal->add($ev);
 
-        $it = new EventIterator($vcal, (string) $ev->UID);
+        $it = new EventIterator($vcal, (string)$ev->UID);
 
         $it->fastForward(new DateTimeImmutable('2011-04-05T000000', new DateTimeZone('UTC')));
 
@@ -1122,8 +1148,8 @@ class MainTest extends TestCase
     /**
      * @depends testValues
      */
-    public function testComplexExclusions()
-    {
+    function testComplexExclusions() {
+
         $vcal = new VCalendar();
         $ev = $vcal->createComponent('VEVENT');
 
@@ -1145,17 +1171,17 @@ class MainTest extends TestCase
 
         $vcal->add($ev);
 
-        $it = new EventIterator($vcal, (string) $ev->UID);
+        $it = new EventIterator($vcal, (string)$ev->UID);
 
         $max = 20;
         $result = [];
         foreach ($it as $item) {
-            $result[] = $item;
-            --$max;
 
-            if (!$max) {
-                break;
-            }
+            $result[] = $item;
+            $max--;
+
+            if (!$max) break;
+
         }
 
         $this->assertEquals(
@@ -1170,13 +1196,14 @@ class MainTest extends TestCase
             ],
             $result
         );
+
     }
 
     /**
      * @depends testValues
      */
-    public function testOverridenEvent()
-    {
+    function testOverridenEvent() {
+
         $vcal = new VCalendar();
 
         $ev1 = $vcal->createComponent('VEVENT');
@@ -1210,9 +1237,11 @@ class MainTest extends TestCase
         $dates = [];
         $summaries = [];
         while ($it->valid()) {
+
             $dates[] = $it->getDTStart();
-            $summaries[] = (string) $it->getEventObject()->SUMMARY;
+            $summaries[] = (string)$it->getEventObject()->SUMMARY;
             $it->next();
+
         }
 
         $tz = new DateTimeZone('UTC');
@@ -1241,13 +1270,14 @@ class MainTest extends TestCase
             'Event 3',
             'baseEvent',
         ], $summaries);
+
     }
 
     /**
      * @depends testValues
      */
-    public function testOverridenEvent2()
-    {
+    function testOverridenEvent2() {
+
         $vcal = new VCalendar();
 
         $ev1 = $vcal->createComponent('VEVENT');
@@ -1272,9 +1302,11 @@ class MainTest extends TestCase
         $dates = [];
         $summaries = [];
         while ($it->valid()) {
+
             $dates[] = $it->getDTStart();
-            $summaries[] = (string) $it->getEventObject()->SUMMARY;
+            $summaries[] = (string)$it->getEventObject()->SUMMARY;
             $it->next();
+
         }
 
         $tz = new DateTimeZone('UTC');
@@ -1282,6 +1314,7 @@ class MainTest extends TestCase
             new DateTimeImmutable('2012-01-12 12:00:00', $tz),
             new DateTimeImmutable('2012-01-13 12:00:00', $tz),
             new DateTimeImmutable('2012-01-26 12:00:00', $tz),
+
         ], $dates);
 
         $this->assertEquals([
@@ -1289,13 +1322,14 @@ class MainTest extends TestCase
             'Override!',
             'baseEvent',
         ], $summaries);
+
     }
 
     /**
      * @depends testValues
      */
-    public function testOverridenEventNoValuesExpected()
-    {
+    function testOverridenEventNoValuesExpected() {
+
         $vcal = new VCalendar();
         $ev1 = $vcal->createComponent('VEVENT');
 
@@ -1329,20 +1363,23 @@ class MainTest extends TestCase
         // iterator would hit 24, 25 (overriden from 31) and 7 feb but because
         // we 'filter' from the 28th till the 6th, we should get 0 results.
         while ($it->valid() && $it->getDTStart() < new DateTimeImmutable('2012-02-06 23:00:00')) {
+
             $dates[] = $it->getDTStart();
-            $summaries[] = (string) $it->getEventObject()->SUMMARY;
+            $summaries[] = (string)$it->getEventObject()->SUMMARY;
             $it->next();
+
         }
 
         $this->assertEquals([], $dates);
         $this->assertEquals([], $summaries);
+
     }
 
     /**
      * @depends testValues
      */
-    public function testRDATE()
-    {
+    function testRDATE() {
+
         $vcal = new VCalendar();
         $ev = $vcal->createComponent('VEVENT');
 
@@ -1364,12 +1401,12 @@ class MainTest extends TestCase
         $max = 12;
         $result = [];
         foreach ($it as $item) {
-            $result[] = $item;
-            --$max;
 
-            if (!$max) {
-                break;
-            }
+            $result[] = $item;
+            $max--;
+
+            if (!$max) break;
+
         }
 
         $tz = new DateTimeZone('UTC');
@@ -1382,14 +1419,15 @@ class MainTest extends TestCase
             ],
             $result
         );
+
     }
 
     /**
      * @depends testValues
      * @expectedException \InvalidArgumentException
      */
-    public function testNoMasterBadUID()
-    {
+    function testNoMasterBadUID() {
+
         $vcal = new VCalendar();
         // ev2 overrides an event, and puts it on 2pm instead.
         $ev2 = $vcal->createComponent('VEVENT');
@@ -1410,5 +1448,6 @@ class MainTest extends TestCase
         $vcal->add($ev3);
 
         $it = new EventIterator($vcal, 'broken');
+
     }
 }

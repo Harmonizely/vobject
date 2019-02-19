@@ -11,10 +11,10 @@ use Sabre\VObject\Reader;
  * We use `RFCxxx` has a placeholder for the
  * https://tools.ietf.org/html/draft-daboo-calendar-availability-05 name.
  */
-class AvailableTest extends TestCase
-{
-    public function testAvailableComponent()
-    {
+class AvailableTest extends TestCase {
+
+    function testAvailableComponent() {
+
         $vcal = <<<VCAL
 BEGIN:VCALENDAR
 BEGIN:AVAILABLE
@@ -22,11 +22,12 @@ END:AVAILABLE
 END:VCALENDAR
 VCAL;
         $document = Reader::read($vcal);
-        $this->assertInstanceOf(__NAMESPACE__.'\Available', $document->AVAILABLE);
+        $this->assertInstanceOf(__NAMESPACE__ . '\Available', $document->AVAILABLE);
+
     }
 
-    public function testGetEffectiveStartEnd()
-    {
+    function testGetEffectiveStartEnd() {
+
         $vcal = <<<VCAL
 BEGIN:VCALENDAR
 BEGIN:AVAILABLE
@@ -45,10 +46,11 @@ VCAL;
             ],
             $document->AVAILABLE->getEffectiveStartEnd()
         );
+
     }
 
-    public function testGetEffectiveStartEndDuration()
-    {
+    function testGetEffectiveStartEndDuration() {
+
         $vcal = <<<VCAL
 BEGIN:VCALENDAR
 BEGIN:AVAILABLE
@@ -67,5 +69,6 @@ VCAL;
             ],
             $document->AVAILABLE->getEffectiveStartEnd()
         );
+
     }
 }

@@ -4,18 +4,19 @@ namespace Sabre\VObject\Component;
 
 use PHPUnit\Framework\TestCase;
 
-class VEventTest extends TestCase
-{
+class VEventTest extends TestCase {
+
     /**
      * @dataProvider timeRangeTestData
      */
-    public function testInTimeRange(VEvent $vevent, $start, $end, $outcome)
-    {
+    function testInTimeRange(VEvent $vevent, $start, $end, $outcome) {
+
         $this->assertEquals($outcome, $vevent->isInTimeRange($start, $end));
+
     }
 
-    public function timeRangeTestData()
-    {
+    function timeRangeTestData() {
+
         $tests = [];
 
         $calendar = new VCalendar();
@@ -90,5 +91,7 @@ class VEventTest extends TestCase
         $tests[] = [$vevent9, new \DateTime('2016-10-31'), new \DateTime('2016-12-12'), true];
 
         return $tests;
+
     }
+
 }

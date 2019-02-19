@@ -4,12 +4,12 @@ namespace Sabre\VObject;
 
 use PHPUnit\Framework\TestCase;
 
-class FreeBusyGeneratorTest extends TestCase
-{
+class FreeBusyGeneratorTest extends TestCase {
+
     use PHPUnitAssertions;
 
-    public function testGeneratorBaseObject()
-    {
+    function testGeneratorBaseObject() {
+
         $obj = new Component\VCalendar();
         $obj->METHOD = 'PUBLISH';
 
@@ -20,18 +20,20 @@ class FreeBusyGeneratorTest extends TestCase
         $result = $gen->getResult();
 
         $this->assertEquals('PUBLISH', $result->METHOD->getValue());
+
     }
 
     /**
-     * @expectedException \InvalidArgumentException
+     * @expectedException InvalidArgumentException
      */
-    public function testInvalidArg()
-    {
+    function testInvalidArg() {
+
         $gen = new FreeBusyGenerator(
             new \DateTime('2012-01-01'),
             new \DateTime('2012-12-31'),
             new \StdClass()
         );
+
     }
 
     /**
@@ -44,13 +46,14 @@ class FreeBusyGeneratorTest extends TestCase
      * It only generates the freebusy report for the following time-range:
      * 2011-01-01 11:00:00 until 2011-01-03 11:11:11
      *
-     * @param string      $expected
-     * @param array       $input
+     * @param string $expected
+     * @param array $input
      * @param string|null $timeZone
-     * @param string      $vavailability
+     * @param string $vavailability
+     * @return void
      */
-    public function assertFreeBusyReport($expected, $input, $timeZone = null, $vavailability = null)
-    {
+    function assertFreeBusyReport($expected, $input, $timeZone = null, $vavailability = null) {
+
         $gen = new FreeBusyGenerator(
             new \DateTime('20110101T110000Z', new \DateTimeZone('UTC')),
             new \DateTime('20110103T110000Z', new \DateTimeZone('UTC')),
@@ -82,10 +85,11 @@ END:VCALENDAR
 ICS;
 
         $this->assertVObjectEqualsVObject($expected, $output);
+
     }
 
-    public function testSimple()
-    {
+    function testSimple() {
+
         $blob = <<<ICS
 BEGIN:VCALENDAR
 BEGIN:VEVENT
@@ -96,14 +100,16 @@ END:VEVENT
 END:VCALENDAR
 ICS;
 
+
         $this->assertFreeBusyReport(
-            'FREEBUSY:20110101T120000Z/20110101T130000Z',
+            "FREEBUSY:20110101T120000Z/20110101T130000Z",
             $blob
         );
+
     }
 
-    public function testSource()
-    {
+    function testSource() {
+
         $blob = <<<ICS
 BEGIN:VCALENDAR
 BEGIN:VEVENT
@@ -117,17 +123,19 @@ ICS;
         fwrite($h, $blob);
         rewind($h);
 
+
         $this->assertFreeBusyReport(
-            'FREEBUSY:20110101T120000Z/20110101T130000Z',
+            "FREEBUSY:20110101T120000Z/20110101T130000Z",
             $h
         );
+
     }
 
     /**
-     * Testing TRANSP:OPAQUE.
+     * Testing TRANSP:OPAQUE
      */
-    public function testOpaque()
-    {
+    function testOpaque() {
+
         $blob = <<<ICS
 BEGIN:VCALENDAR
 BEGIN:VEVENT
@@ -140,16 +148,17 @@ END:VCALENDAR
 ICS;
 
         $this->assertFreeBusyReport(
-            'FREEBUSY:20110101T130000Z/20110101T140000Z',
+            "FREEBUSY:20110101T130000Z/20110101T140000Z",
             $blob
         );
+
     }
 
     /**
-     * Testing TRANSP:TRANSPARENT.
+     * Testing TRANSP:TRANSPARENT
      */
-    public function testTransparent()
-    {
+    function testTransparent() {
+
         // transparent, hidden
         $blob = <<<ICS
 BEGIN:VCALENDAR
@@ -163,16 +172,17 @@ END:VCALENDAR
 ICS;
 
         $this->assertFreeBusyReport(
-            '',
+            "",
             $blob
         );
+
     }
 
     /**
-     * Testing STATUS:CANCELLED.
+     * Testing STATUS:CANCELLED
      */
-    public function testCancelled()
-    {
+    function testCancelled() {
+
         // transparent, hidden
         $blob = <<<ICS
 BEGIN:VCALENDAR
@@ -186,16 +196,17 @@ END:VCALENDAR
 ICS;
 
         $this->assertFreeBusyReport(
-            '',
+            "",
             $blob
         );
+
     }
 
     /**
-     * Testing STATUS:TENTATIVE.
+     * Testing STATUS:TENTATIVE
      */
-    public function testTentative()
-    {
+    function testTentative() {
+
         // tentative, shows up
         $blob = <<<ICS
 BEGIN:VCALENDAR
@@ -212,13 +223,14 @@ ICS;
             'FREEBUSY;FBTYPE=BUSY-TENTATIVE:20110101T180000Z/20110101T190000Z',
             $blob
         );
+
     }
 
     /**
      * Testing an event that falls outside of the report time-range.
      */
-    public function testOutsideTimeRange()
-    {
+    function testOutsideTimeRange() {
+
         // outside of time-range, hidden
         $blob = <<<ICS
 BEGIN:VCALENDAR
@@ -234,13 +246,14 @@ ICS;
             '',
             $blob
         );
+
     }
 
     /**
      * Testing an event that falls outside of the report time-range.
      */
-    public function testOutsideTimeRange2()
-    {
+    function testOutsideTimeRange2() {
+
         // outside of time-range, hidden
         $blob = <<<ICS
 BEGIN:VCALENDAR
@@ -256,13 +269,14 @@ ICS;
             '',
             $blob
         );
+
     }
 
     /**
-     * Testing an event that uses DURATION.
+     * Testing an event that uses DURATION
      */
-    public function testDuration()
-    {
+    function testDuration() {
+
         // using duration, shows up
         $blob = <<<ICS
 BEGIN:VCALENDAR
@@ -278,13 +292,14 @@ ICS;
             'FREEBUSY:20110101T190000Z/20110101T200000Z',
             $blob
         );
+
     }
 
     /**
-     * Testing an all-day event.
+     * Testing an all-day event
      */
-    public function testAllDay()
-    {
+    function testAllDay() {
+
         // Day-long event, shows up
         $blob = <<<ICS
 BEGIN:VCALENDAR
@@ -299,13 +314,14 @@ ICS;
             'FREEBUSY:20110102T000000Z/20110103T000000Z',
             $blob
         );
+
     }
 
     /**
      * Testing an event that has no end or duration.
      */
-    public function testNoDuration()
-    {
+    function testNoDuration() {
+
         // No duration, does not show up
         $blob = <<<ICS
 BEGIN:VCALENDAR
@@ -320,13 +336,14 @@ ICS;
             '',
             $blob
         );
+
     }
 
     /**
      * Testing feeding the freebusy generator an object instead of a string.
      */
-    public function testObject()
-    {
+    function testObject() {
+
         // encoded as object, shows up
         $blob = <<<ICS
 BEGIN:VCALENDAR
@@ -342,13 +359,15 @@ ICS;
             'FREEBUSY:20110101T210000Z/20110101T220000Z',
             Reader::read($blob)
         );
+
+
     }
 
     /**
-     * Testing feeding VFREEBUSY objects instead of VEVENT.
+     * Testing feeding VFREEBUSY objects instead of VEVENT
      */
-    public function testVFreeBusy()
-    {
+    function testVFreeBusy() {
+
         // Freebusy. Some parts show up
         $blob = <<<ICS
 BEGIN:VCALENDAR
@@ -363,14 +382,15 @@ END:VCALENDAR
 ICS;
 
         $this->assertFreeBusyReport(
-            "FREEBUSY:20110103T010000Z/20110103T020000Z\n".
+            "FREEBUSY:20110103T010000Z/20110103T020000Z\n" .
             'FREEBUSY:20110103T030000Z/20110103T060000Z',
             $blob
         );
+
     }
 
-    public function testYearlyRecurrence()
-    {
+    function testYearlyRecurrence() {
+
         // Yearly recurrence rule, shows up
         $blob = <<<ICS
 BEGIN:VCALENDAR
@@ -387,10 +407,11 @@ ICS;
             'FREEBUSY:20110101T220000Z/20110101T230000Z',
             $blob
         );
+
     }
 
-    public function testYearlyRecurrenceDuration()
-    {
+    function testYearlyRecurrenceDuration() {
+
         // Yearly recurrence rule + duration, shows up
         $blob = <<<ICS
 BEGIN:VCALENDAR
@@ -407,10 +428,11 @@ ICS;
             'FREEBUSY:20110101T230000Z/20110102T000000Z',
             $blob
         );
+
     }
 
-    public function testFloatingTime()
-    {
+    function testFloatingTime() {
+
         // Floating time, no timezone
         $blob = <<<ICS
 BEGIN:VCALENDAR
@@ -423,13 +445,14 @@ END:VCALENDAR
 ICS;
 
         $this->assertFreeBusyReport(
-            'FREEBUSY:20110101T120000Z/20110101T130000Z',
+            "FREEBUSY:20110101T120000Z/20110101T130000Z",
             $blob
         );
+
     }
 
-    public function testFloatingTimeReferenceTimeZone()
-    {
+    function testFloatingTimeReferenceTimeZone() {
+
         // Floating time + reference timezone
         $blob = <<<ICS
 BEGIN:VCALENDAR
@@ -442,14 +465,15 @@ END:VCALENDAR
 ICS;
 
         $this->assertFreeBusyReport(
-            'FREEBUSY:20110101T170000Z/20110101T180000Z',
+            "FREEBUSY:20110101T170000Z/20110101T180000Z",
             $blob,
             new \DateTimeZone('America/Toronto')
         );
+
     }
 
-    public function testAllDay2()
-    {
+    function testAllDay2() {
+
         // All-day event, slightly outside of the VFREEBUSY range.
         $blob = <<<ICS
 BEGIN:VCALENDAR
@@ -461,13 +485,14 @@ END:VCALENDAR
 ICS;
 
         $this->assertFreeBusyReport(
-            'FREEBUSY:20110101T110000Z/20110102T000000Z',
+            "FREEBUSY:20110101T110000Z/20110102T000000Z",
             $blob
         );
+
     }
 
-    public function testAllDayReferenceTimeZone()
-    {
+    function testAllDayReferenceTimeZone() {
+
         // All-day event + reference timezone
         $blob = <<<ICS
 BEGIN:VCALENDAR
@@ -479,14 +504,15 @@ END:VCALENDAR
 ICS;
 
         $this->assertFreeBusyReport(
-            'FREEBUSY:20110101T110000Z/20110102T050000Z',
+            "FREEBUSY:20110101T110000Z/20110102T050000Z",
             $blob,
             new \DateTimeZone('America/Toronto')
         );
+
     }
 
-    public function testNoValidInstances()
-    {
+    function testNoValidInstances() {
+
         // Recurrence rule with no valid instances
         $blob = <<<ICS
 BEGIN:VCALENDAR
@@ -501,17 +527,18 @@ END:VCALENDAR
 ICS;
 
         $this->assertFreeBusyReport(
-            '',
+            "",
             $blob
         );
+
     }
 
     /**
      * This VAVAILABILITY object overlaps with the time-range, but we're just
      * busy the entire time.
      */
-    public function testVAvailabilitySimple()
-    {
+    function testVAvailabilitySimple() {
+
         $blob = <<<ICS
 BEGIN:VCALENDAR
 BEGIN:VEVENT
@@ -536,21 +563,22 @@ END:VCALENDAR
 ICS;
 
         $this->assertFreeBusyReport(
-            "FREEBUSY;FBTYPE=BUSY-UNAVAILABLE:20110101T110000Z/20110101T120000Z\n".
-            "FREEBUSY:20110101T120000Z/20110101T130000Z\n".
-            'FREEBUSY;FBTYPE=BUSY-UNAVAILABLE:20110101T130000Z/20110103T110000Z',
+            "FREEBUSY;FBTYPE=BUSY-UNAVAILABLE:20110101T110000Z/20110101T120000Z\n" .
+            "FREEBUSY:20110101T120000Z/20110101T130000Z\n" .
+            "FREEBUSY;FBTYPE=BUSY-UNAVAILABLE:20110101T130000Z/20110103T110000Z",
             $blob,
             null,
             $vavail
         );
+
     }
 
     /**
      * This VAVAILABILITY object does not overlap at all with the freebusy
      * report, so it should be ignored.
      */
-    public function testVAvailabilityIrrelevant()
-    {
+    function testVAvailabilityIrrelevant() {
+
         $blob = <<<ICS
 BEGIN:VCALENDAR
 BEGIN:VEVENT
@@ -575,19 +603,20 @@ END:VCALENDAR
 ICS;
 
         $this->assertFreeBusyReport(
-            'FREEBUSY:20110101T120000Z/20110101T130000Z',
+            "FREEBUSY:20110101T120000Z/20110101T130000Z",
             $blob,
             null,
             $vavail
         );
+
     }
 
     /**
      * This VAVAILABILITY object has a 9am-5pm AVAILABLE object for office
      * hours.
      */
-    public function testVAvailabilityOfficeHours()
-    {
+    function testVAvailabilityOfficeHours() {
+
         $blob = <<<ICS
 BEGIN:VCALENDAR
 BEGIN:VEVENT
@@ -614,21 +643,22 @@ END:VCALENDAR
 ICS;
 
         $this->assertFreeBusyReport(
-            "FREEBUSY;FBTYPE=BUSY-TENTATIVE:20110101T110000Z/20110101T120000Z\n".
-            "FREEBUSY:20110101T120000Z/20110101T130000Z\n".
+            "FREEBUSY;FBTYPE=BUSY-TENTATIVE:20110101T110000Z/20110101T120000Z\n" .
+            "FREEBUSY:20110101T120000Z/20110101T130000Z\n" .
             "FREEBUSY;FBTYPE=BUSY-TENTATIVE:20110101T130000Z/20110103T090000Z\n",
             $blob,
             null,
             $vavail
         );
+
     }
 
     /**
      * This test has the same office hours, but has a vacation blocked off for
      * the relevant time, using a higher priority. (lower number).
      */
-    public function testVAvailabilityOfficeHoursVacation()
-    {
+    function testVAvailabilityOfficeHoursVacation() {
+
         $blob = <<<ICS
 BEGIN:VCALENDAR
 BEGIN:VEVENT
@@ -662,11 +692,12 @@ END:VCALENDAR
 ICS;
 
         $this->assertFreeBusyReport(
-            'FREEBUSY:20110101T110000Z/20110103T110000Z',
+            "FREEBUSY:20110101T110000Z/20110103T110000Z",
             $blob,
             null,
             $vavail
         );
+
     }
 
     /**
@@ -675,8 +706,8 @@ ICS;
      *
      * The end-result is that the vacation VAVAILABILITY is completely ignored.
      */
-    public function testVAvailabilityOfficeHoursVacation2()
-    {
+    function testVAvailabilityOfficeHoursVacation2() {
+
         $blob = <<<ICS
 BEGIN:VCALENDAR
 BEGIN:VEVENT
@@ -710,12 +741,13 @@ END:VCALENDAR
 ICS;
 
         $this->assertFreeBusyReport(
-            "FREEBUSY;FBTYPE=BUSY-TENTATIVE:20110101T110000Z/20110101T120000Z\n".
-            "FREEBUSY:20110101T120000Z/20110101T130000Z\n".
+            "FREEBUSY;FBTYPE=BUSY-TENTATIVE:20110101T110000Z/20110101T120000Z\n" .
+            "FREEBUSY:20110101T120000Z/20110101T130000Z\n" .
             "FREEBUSY;FBTYPE=BUSY-TENTATIVE:20110101T130000Z/20110103T090000Z\n",
             $blob,
             null,
             $vavail
         );
+
     }
 }

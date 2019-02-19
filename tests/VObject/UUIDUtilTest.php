@@ -4,10 +4,10 @@ namespace Sabre\VObject;
 
 use PHPUnit\Framework\TestCase;
 
-class UUIDUtilTest extends TestCase
-{
-    public function testValidateUUID()
-    {
+class UUIDUtilTest extends TestCase {
+
+    function testValidateUUID() {
+
         $this->assertTrue(
             UUIDUtil::validateUUID('11111111-2222-3333-4444-555555555555')
         );
@@ -20,17 +20,20 @@ class UUIDUtilTest extends TestCase
         $this->assertFalse(
             UUIDUtil::validateUUID('fffffffg-2222-3333-4444-555555555555')
         );
+
     }
 
     /**
      * @depends testValidateUUID
      */
-    public function testGetUUID()
-    {
+    function testGetUUID() {
+
         $this->assertTrue(
             UUIDUtil::validateUUID(
                 UUIDUtil::getUUID()
             )
         );
+
     }
+
 }

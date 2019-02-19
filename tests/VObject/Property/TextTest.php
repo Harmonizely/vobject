@@ -5,13 +5,13 @@ namespace Sabre\VObject\Property;
 use PHPUnit\Framework\TestCase;
 use Sabre\VObject\Component\VCard;
 
-class TextTest extends TestCase
-{
-    public function assertVCard21Serialization($propValue, $expected)
-    {
+class TextTest extends TestCase {
+
+    function assertVCard21Serialization($propValue, $expected) {
+
         $doc = new VCard([
             'VERSION' => '2.1',
-            'PROP' => $propValue,
+            'PROP'    => $propValue
         ], false);
 
         // Adding quoted-printable, because we're testing if it gets removed
@@ -19,53 +19,61 @@ class TextTest extends TestCase
         $doc->PROP['ENCODING'] = 'QUOTED-PRINTABLE';
         $doc->PROP['P1'] = 'V1';
 
+
         $output = $doc->serialize();
 
+
         $this->assertEquals("BEGIN:VCARD\r\nVERSION:2.1\r\n$expected\r\nEND:VCARD\r\n", $output);
+
     }
 
-    public function testSerializeVCard21()
-    {
+    function testSerializeVCard21() {
+
         $this->assertVCard21Serialization(
             'f;oo',
             'PROP;P1=V1:f;oo'
         );
+
     }
 
-    public function testSerializeVCard21Array()
-    {
+    function testSerializeVCard21Array() {
+
         $this->assertVCard21Serialization(
             ['f;oo', 'bar'],
             'PROP;P1=V1:f\;oo;bar'
         );
-    }
 
-    public function testSerializeVCard21Fold()
-    {
+    }
+    function testSerializeVCard21Fold() {
+
         $this->assertVCard21Serialization(
             str_repeat('x', 80),
-            'PROP;P1=V1:'.str_repeat('x', 64)."\r\n ".str_repeat('x', 16)
+            'PROP;P1=V1:' . str_repeat('x', 64) . "\r\n " . str_repeat('x', 16)
         );
+
     }
 
-    public function testSerializeQuotedPrintable()
-    {
+
+
+    function testSerializeQuotedPrintable() {
+
         $this->assertVCard21Serialization(
             "foo\r\nbar",
             'PROP;P1=V1;ENCODING=QUOTED-PRINTABLE:foo=0D=0Abar'
         );
     }
 
-    public function testSerializeQuotedPrintableFold()
-    {
+    function testSerializeQuotedPrintableFold() {
+
         $this->assertVCard21Serialization(
             "foo\r\nbarxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
             "PROP;P1=V1;ENCODING=QUOTED-PRINTABLE:foo=0D=0Abarxxxxxxxxxxxxxxxxxxxxxxxxxx=\r\n xxx"
         );
+
     }
 
-    public function testValidateMinimumPropValue()
-    {
+    function testValidateMinimumPropValue() {
+
         $vcard = <<<IN
 BEGIN:VCARD
 VERSION:4.0
@@ -83,5 +91,7 @@ IN;
         $vcard->validate(\Sabre\VObject\Node::REPAIR);
 
         $this->assertEquals(5, count($vcard->N->getParts()));
+
     }
+
 }

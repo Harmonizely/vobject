@@ -4,12 +4,12 @@ namespace Sabre\VObject;
 
 use PHPUnit\Framework\TestCase;
 
-class VCardConverterTest extends TestCase
-{
+class VCardConverterTest extends TestCase {
+
     use \Sabre\VObject\PHPUnitAssertions;
 
-    public function testConvert30to40()
-    {
+    function testConvert30to40() {
+
         $input = <<<IN
 BEGIN:VCARD
 VERSION:3.0
@@ -48,10 +48,11 @@ OUT;
             $output,
             $vcard
         );
+
     }
 
-    public function testConvert40to40()
-    {
+    function testConvert40to40() {
+
         $input = <<<IN
 BEGIN:VCARD
 VERSION:4.0
@@ -85,10 +86,11 @@ OUT;
             $output,
             $vcard
         );
+
     }
 
-    public function testConvert21to40()
-    {
+    function testConvert21to40() {
+
         $input = <<<IN
 BEGIN:VCARD
 VERSION:2.1
@@ -123,10 +125,11 @@ OUT;
             $output,
             $vcard
         );
+
     }
 
-    public function testConvert30to30()
-    {
+    function testConvert30to30() {
+
         $input = <<<IN
 BEGIN:VCARD
 VERSION:3.0
@@ -162,10 +165,11 @@ OUT;
             $output,
             $vcard
         );
+
     }
 
-    public function testConvert40to30()
-    {
+    function testConvert40to30() {
+
         $input = <<<IN
 BEGIN:VCARD
 VERSION:4.0
@@ -202,10 +206,11 @@ OUT;
             $output,
             $vcard
         );
+
     }
 
-    public function testConvertGroupCard()
-    {
+    function testConvertGroupCard() {
+
         $input = <<<IN
 BEGIN:VCARD
 VERSION:3.0
@@ -247,10 +252,11 @@ OUT;
             $output,
             $vcard
         );
+
     }
 
-    public function testBDAYConversion()
-    {
+    function testBDAYConversion() {
+
         $input = <<<IN
 BEGIN:VCARD
 VERSION:3.0
@@ -292,13 +298,14 @@ OUT;
             $output,
             $vcard
         );
+
     }
 
     /**
-     * @expectedException \InvalidArgumentException
+     * @expectedException InvalidArgumentException
      */
-    public function testUnknownSourceVCardVersion()
-    {
+    function testUnknownSourceVCardVersion() {
+
         $input = <<<IN
 BEGIN:VCARD
 VERSION:4.2
@@ -318,13 +325,14 @@ IN;
 
         $vcard = Reader::read($input);
         $vcard->convert(Document::VCARD40);
+
     }
 
     /**
-     * @expectedException \InvalidArgumentException
+     * @expectedException InvalidArgumentException
      */
-    public function testUnknownTargetVCardVersion()
-    {
+    function testUnknownTargetVCardVersion() {
+
         $input = <<<IN
 BEGIN:VCARD
 VERSION:3.0
@@ -335,10 +343,11 @@ IN;
 
         $vcard = Reader::read($input);
         $vcard->convert(Document::VCARD21);
+
     }
 
-    public function testConvertIndividualCard()
-    {
+    function testConvertIndividualCard() {
+
         $input = <<<IN
 BEGIN:VCARD
 VERSION:4.0
@@ -378,10 +387,11 @@ OUT;
             $output,
             $vcard
         );
+
     }
 
-    public function testAnniversary()
-    {
+    function testAnniversary() {
+
         $input = <<<IN
 BEGIN:VCARD
 VERSION:4.0
@@ -414,7 +424,7 @@ OUT;
             $output
         ) = [
             $output,
-            $input,
+            $input
         ];
 
         $vcard = Reader::read($input);
@@ -424,10 +434,11 @@ OUT;
             $output,
             $vcard
         );
+
     }
 
-    public function testMultipleAnniversaries()
-    {
+    function testMultipleAnniversaries() {
+
         $input = <<<IN
 BEGIN:VCARD
 VERSION:4.0
@@ -468,7 +479,7 @@ OUT;
             $output
         ) = [
             $output,
-            $input,
+            $input
         ];
 
         $vcard = Reader::read($input);
@@ -478,11 +489,12 @@ OUT;
             $output,
             $vcard
         );
+
     }
 
-    public function testNoLabel()
-    {
-        $input = <<<VCF
+    function testNoLabel() {
+
+      $input = <<<VCF
 BEGIN:VCARD
 VERSION:3.0
 UID:foo
@@ -493,18 +505,18 @@ END:VCARD
 
 VCF;
 
-        $vcard = Reader::read($input);
+      $vcard = Reader::read($input);
 
-        $this->assertInstanceOf('Sabre\\VObject\\Component\\VCard', $vcard);
-        $vcard = $vcard->convert(Document::VCARD40);
-        $vcard = $vcard->serialize();
+      $this->assertInstanceOf('Sabre\\VObject\\Component\\VCard', $vcard);
+      $vcard = $vcard->convert(Document::VCARD40);
+      $vcard = $vcard->serialize();
 
-        $converted = Reader::read($vcard);
-        $converted->validate();
+      $converted = Reader::read($vcard);
+      $converted->validate();
 
-        $version = Version::VERSION;
+      $version = Version::VERSION;
 
-        $expected = <<<VCF
+      $expected = <<<VCF
 BEGIN:VCARD
 VERSION:4.0
 PRODID:-//Sabre//Sabre VObject $version//EN
@@ -516,6 +528,8 @@ END:VCARD
 
 VCF;
 
-        $this->assertEquals($expected, str_replace("\r", '', $vcard));
+      $this->assertEquals($expected, str_replace("\r", "", $vcard));
+
     }
+
 }
