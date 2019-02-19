@@ -166,10 +166,10 @@ abstract class Property extends Node {
      *
      * If a parameter with same name already existed, the values will be
      * combined.
-     * If nameless parameter is added, we try to guess it's name.
+     * If nameless parameter is added, we try to guess its name.
      *
-     * @param string $name
-     * @param string|null|array $value
+     * @param string            $name
+     * @param string|array|null $value
      */
     function add($name, $value = null) {
         $noName = false;

@@ -1,10 +1,19 @@
 ChangeLog
 =========
 
-4.1.7 (????-??-??)
+4.2.0 (2019-02-19)
 ------------------
 
-* 
+* #432: DTSTAMP must be specified in UTC
+* #435: ORGANIZER e-mail address are case-insensitive
+* #441: Repairing BASE64 encoded vCard version 3
+
+4.2.0-alpha1 (2018-09-26)
+-------------------------
+
+* #412: Broker: add timezone to CANCEL messages
+* #424: Support php7.3
+>>>>>>> bd500019764e434ff65872d426f523e7882a0739
 
 4.1.6 (2018-04-20)
 ------------------
