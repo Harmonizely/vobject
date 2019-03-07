@@ -147,7 +147,7 @@ class TimeZoneUtil
             try {
                 if (
                     (in_array($tzid, $tzIdentifiers)) ||
-                    (preg_match('/^GMT(\+|-)([0-9]{4})$/', $tzid, $matches)) ||
+                    (preg_match('/^GMT(\+|-)([0-9]{2}(\.)?[0-9]{2})|\/(\+|-)([0-9]{2}\.[0-9]{2})$/', $tzid, $matches)) ||
                     (in_array($tzid, self::getIdentifiersBC()))
                 ) {
                     return new \DateTimeZone($tzid);
