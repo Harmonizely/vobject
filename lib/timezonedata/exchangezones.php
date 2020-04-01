@@ -12,6 +12,7 @@
  * @license http://sabre.io/license/ Modified BSD License
  */
 return [
+    'MITTELEUROPÄISCHE ZEIT' => 'Europe/Berlin',
     'Universal Coordinated Time' => 'UTC',
     'Casablanca, Monrovia' => 'Africa/Casablanca',
     'Greenwich Mean Time: Dublin, Edinburgh, Lisbon, London' => 'Europe/Lisbon',
