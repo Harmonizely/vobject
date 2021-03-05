@@ -179,7 +179,12 @@ class VCalendar extends VObject\Document
             if (!$component instanceof VObject\Component) {
                 return false;
             }
+
             if ('VTIMEZONE' === $component->name) {
+                return false;
+            }
+
+            if (isset($component->{'RECURRENCE-ID'})) {
                 return false;
             }
 
@@ -228,9 +233,6 @@ class VCalendar extends VObject\Document
                 return false;
             }
             if ('VTIMEZONE' === $component->name) {
-                return false;
-            }
-            if (isset($component->{'RECURRENCE-ID'})) {
                 return false;
             }
 
