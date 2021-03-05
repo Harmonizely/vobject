@@ -5,6 +5,7 @@ namespace Sabre\VObject\Component;
 use DateTimeZone;
 use PHPUnit\Framework\TestCase;
 use Sabre\VObject;
+use Sabre\VObject\InvalidDataException;
 
 class VCalendarTest extends TestCase
 {
@@ -330,11 +331,9 @@ END:VCALENDAR
         return $tests;
     }
 
-    /**
-     * @expectedException \Sabre\VObject\InvalidDataException
-     */
     public function testBrokenEventExpand()
     {
+        $this->expectException(InvalidDataException::class);
         $input = 'BEGIN:VCALENDAR
 CALSCALE:GREGORIAN
 VERSION:2.0
@@ -349,6 +348,33 @@ END:VCALENDAR
             new \DateTime('2011-12-01'),
             new \DateTime('2011-12-31')
         );
+    }
+
+    /**
+     * This test used to induce an infinite loop.
+     * The "medium" annotation means that phpunit will fail the
+     * test if it takes longer than a default of 10 seconds.
+     *
+     * @medium
+     */
+    public function testEventExpandYearly()
+    {
+        $input = 'BEGIN:VCALENDAR
+BEGIN:VEVENT
+UID:1a093f1012086078fdd3d9df5ff4d7d0
+DTSTART;TZID=UTC:20210203T130000
+DTEND;TZID=UTC:20210203T140000
+RRULE:FREQ=YEARLY;COUNT=7;WKST=MO;BYDAY=MO;BYWEEKNO=13,15,50
+END:VEVENT
+END:VCALENDAR
+';
+        $vcal = VObject\Reader::read($input);
+        $events = $vcal->expand(
+            new \DateTime('2021-01-01'),
+            new \DateTime('2023-01-01')
+        );
+
+        $this->assertCount(7, $events->VEVENT);
     }
 
     public function testGetDocumentType()

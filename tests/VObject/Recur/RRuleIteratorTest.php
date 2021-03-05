@@ -6,6 +6,7 @@ use DateTime;
 use DateTimeImmutable;
 use DateTimeZone;
 use PHPUnit\Framework\TestCase;
+use Sabre\VObject\InvalidDataException;
 
 class RRuleIteratorTest extends TestCase
 {
@@ -264,7 +265,7 @@ class RRuleIteratorTest extends TestCase
         );
     }
 
-    public function testMonlthyEndOfMonth()
+    public function testMonthlyEndOfMonth()
     {
         $this->parse(
             'FREQ=MONTHLY;INTERVAL=2;COUNT=12',
@@ -327,6 +328,33 @@ class RRuleIteratorTest extends TestCase
                 '2011-03-22 00:00:00',
                 '2011-03-28 00:00:00',
                 '2011-05-02 00:00:00',
+            ]
+        );
+    }
+
+    public function testMonthlyByDayUntil()
+    {
+        $this->parse(
+            'FREQ=MONTHLY;INTERVAL=1;BYDAY=WE;WKST=WE;UNTIL=20210317T000000Z',
+            '2021-02-10 00:00:00',
+            [
+                '2021-02-10 00:00:00',
+                '2021-02-17 00:00:00',
+                '2021-02-24 00:00:00',
+                '2021-03-03 00:00:00',
+                '2021-03-10 00:00:00',
+                '2021-03-17 00:00:00',
+            ]
+        );
+    }
+
+    public function testMonthlyByDayUntilWithImpossibleNextOccurrence()
+    {
+        $this->parse(
+            'FREQ=MONTHLY;INTERVAL=1;BYDAY=2WE;BYMONTHDAY=2;WKST=WE;UNTIL=20210317T000000Z',
+            '2021-02-10 00:00:00',
+            [
+                '2021-02-10 00:00:00',
             ]
         );
     }
@@ -422,11 +450,9 @@ class RRuleIteratorTest extends TestCase
         );
     }
 
-    /**
-     * @expectedException \Sabre\VObject\InvalidDataException
-     */
     public function testYearlyByMonthInvalidValue1()
     {
+        $this->expectException(InvalidDataException::class);
         $this->parse(
             'FREQ=YEARLY;COUNT=6;BYMONTHDAY=24;BYMONTH=0',
             '2011-04-07 00:00:00',
@@ -434,11 +460,9 @@ class RRuleIteratorTest extends TestCase
         );
     }
 
-    /**
-     * @expectedException \Sabre\VObject\InvalidDataException
-     */
     public function testYearlyByMonthInvalidValue2()
     {
+        $this->expectException(InvalidDataException::class);
         $this->parse(
             'FREQ=YEARLY;COUNT=6;BYMONTHDAY=24;BYMONTH=bla',
             '2011-04-07 00:00:00',
@@ -446,11 +470,9 @@ class RRuleIteratorTest extends TestCase
         );
     }
 
-    /**
-     * @expectedException \Sabre\VObject\InvalidDataException
-     */
     public function testYearlyByMonthManyInvalidValues()
     {
+        $this->expectException(InvalidDataException::class);
         $this->parse(
             'FREQ=YEARLY;COUNT=6;BYMONTHDAY=24;BYMONTH=0,bla',
             '2011-04-07 00:00:00',
@@ -458,11 +480,9 @@ class RRuleIteratorTest extends TestCase
         );
     }
 
-    /**
-     * @expectedException \Sabre\VObject\InvalidDataException
-     */
     public function testYearlyByMonthEmptyValue()
     {
+        $this->expectException(InvalidDataException::class);
         $this->parse(
             'FREQ=YEARLY;COUNT=6;BYMONTHDAY=24;BYMONTH=',
             '2011-04-07 00:00:00',
@@ -576,11 +596,9 @@ class RRuleIteratorTest extends TestCase
         );
     }
 
-    /**
-     * @expectedException \Sabre\VObject\InvalidDataException
-     */
     public function testYearlyByYearDayInvalid390()
     {
+        $this->expectException(InvalidDataException::class);
         $this->parse(
             'FREQ=YEARLY;COUNT=8;INTERVAL=4;BYYEARDAY=390',
             '2011-04-07 00:00:00',
@@ -589,15 +607,26 @@ class RRuleIteratorTest extends TestCase
         );
     }
 
-    /**
-     * @expectedException \Sabre\VObject\InvalidDataException
-     */
     public function testYearlyByYearDayInvalid0()
     {
+        $this->expectException(InvalidDataException::class);
         $this->parse(
             'FREQ=YEARLY;COUNT=8;INTERVAL=4;BYYEARDAY=0',
             '2011-04-07 00:00:00',
             [
+            ]
+        );
+    }
+
+    public function testYearlyByDayByWeekNo()
+    {
+        $this->parse(
+            'FREQ=YEARLY;COUNT=3;BYDAY=MO;BYWEEKNO=13,15,50',
+            '2021-01-01 00:00:00',
+            [
+                '2021-01-01 00:00:00',
+                '2021-03-29 00:00:00',
+                '2021-04-12 00:00:00',
             ]
         );
     }
@@ -639,7 +668,7 @@ class RRuleIteratorTest extends TestCase
      * This bug came from a Fruux customer. This would result in a never-ending
      * request.
      */
-    public function testFastFowardTooFar()
+    public function testFastForwardTooFar()
     {
         $this->parse(
             'FREQ=WEEKLY;BYDAY=MO;UNTIL=20090704T205959Z;INTERVAL=1',
@@ -770,11 +799,9 @@ class RRuleIteratorTest extends TestCase
         );
     }
 
-    /**
-     * @expectedException \Sabre\VObject\InvalidDataException
-     */
     public function testInvalidByWeekNo()
     {
+        $this->expectException(InvalidDataException::class);
         $this->parse(
             'FREQ=YEARLY;BYWEEKNO=54',
             '2011-05-16 00:00:00',
@@ -802,11 +829,10 @@ class RRuleIteratorTest extends TestCase
      * Something, somewhere produced an ics with an interval set to 0. Because
      * this means we increase the current day (or week, month) by 0, this also
      * results in an infinite loop.
-     *
-     * @expectedException \Sabre\VObject\InvalidDataException
      */
     public function testZeroInterval()
     {
+        $this->expectException(InvalidDataException::class);
         $this->parse(
             'FREQ=YEARLY;INTERVAL=0',
             '2012-08-24 14:57:00',
@@ -815,11 +841,9 @@ class RRuleIteratorTest extends TestCase
         );
     }
 
-    /**
-     * @expectedException \Sabre\VObject\InvalidDataException
-     */
     public function testInvalidFreq()
     {
+        $this->expectException(InvalidDataException::class);
         $this->parse(
             'FREQ=SMONTHLY;INTERVAL=3;UNTIL=20111025T000000Z',
             '2011-10-07',
@@ -827,11 +851,9 @@ class RRuleIteratorTest extends TestCase
         );
     }
 
-    /**
-     * @expectedException \Sabre\VObject\InvalidDataException
-     */
     public function testByDayBadOffset()
     {
+        $this->expectException(InvalidDataException::class);
         $this->parse(
             'FREQ=WEEKLY;INTERVAL=1;COUNT=4;BYDAY=0MO;WKST=SA',
             '2014-08-01 00:00:00',
@@ -898,10 +920,29 @@ class RRuleIteratorTest extends TestCase
     }
 
     /**
-     * @expectedException \Sabre\VObject\InvalidDataException
+     * This test can take some seconds to complete.
+     * The "large" annotation means phpunit will let it run for
+     * up to 60 seconds by default.
+     *
+     * @large
      */
+    public function testNeverEnding()
+    {
+        $this->parse(
+            'FREQ=MONTHLY;BYDAY=2TU;BYSETPOS=2',
+            '2015-01-01 00:15:00',
+            [
+                '2015-01-01 00:15:00',
+            ],
+            null,
+            'UTC',
+            true
+        );
+    }
+
     public function testUnsupportedPart()
     {
+        $this->expectException(InvalidDataException::class);
         $this->parse(
             'FREQ=DAILY;BYWODAN=1',
             '2014-08-02 00:15:00',
@@ -934,7 +975,7 @@ class RRuleIteratorTest extends TestCase
         );
     }
 
-    public function parse($rule, $start, $expected, $fastForward = null, $tz = 'UTC')
+    public function parse($rule, $start, $expected, $fastForward = null, $tz = 'UTC', $runTillTheEnd = false)
     {
         $dt = new DateTime($start, new DateTimeZone($tz));
         $parser = new RRuleIterator($rule, $dt);
@@ -948,7 +989,7 @@ class RRuleIteratorTest extends TestCase
             $item = $parser->current();
             $result[] = $item->format('Y-m-d H:i:s');
 
-            if ($parser->isInfinite() && count($result) >= count($expected)) {
+            if (!$runTillTheEnd && $parser->isInfinite() && count($result) >= count($expected)) {
                 break;
             }
             $parser->next();
